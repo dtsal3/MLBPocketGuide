@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/teamLogo"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@drawable/mlb"
         android:layout_margin="8dp"
         android:layout_gravity="center_vertical"
@@ -19,7 +19,7 @@
         />
     <TextView
         android:id="@+id/playerName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:layout_margin="8dp"
@@ -27,13 +27,14 @@
         android:text="Placeholder Name"
         android:layout_gravity="center_vertical"
         app:layout_constraintStart_toEndOf="@id/teamLogo"
+        app:layout_constraintEnd_toStartOf="@id/removeButton"
         app:layout_constraintTop_toTopOf="@id/teamLogo"
         app:layout_constraintBottom_toBottomOf="@id/teamLogo"
         />
     <Button
         android:id="@+id/removeButton"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/ic_baseline_remove_circle_outline_24"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="8dp"

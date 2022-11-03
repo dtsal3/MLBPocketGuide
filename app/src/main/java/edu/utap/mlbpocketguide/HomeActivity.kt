@@ -1,6 +1,7 @@
 package edu.utap.mlbpocketguide
 
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import edu.utap.mlbpocketguide.api.PlayerRepository
@@ -35,10 +36,15 @@ class HomeActivity : AppCompatActivity() {
         // this doesn't actually work
         listAdapter = ArrayAdapter<String> (
             this,
-            R.layout.player_row,
+            android.R.layout.simple_list_item_1,
             listOfPlayers
         )
         playersLV.adapter = listAdapter
+        playersLV.visibility = View.INVISIBLE
+
+        playersLV.setOnClickListener {
+
+        }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -57,6 +63,12 @@ class HomeActivity : AppCompatActivity() {
                 // if query text is change in that case we
                 // are filtering our adapter with
                 // new text on below line.
+                val q = newText?.length ?: 0
+                if (q > 0) {
+                    playersLV.visibility = View.VISIBLE
+                } else {
+                    playersLV.visibility = View.INVISIBLE
+                }
                 listAdapter.filter.filter(newText)
                 return false
             }
