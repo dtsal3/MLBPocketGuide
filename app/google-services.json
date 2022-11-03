@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "335393050813",
+    "project_id": "mlb-pocket-guide",
+    "storage_bucket": "mlb-pocket-guide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335393050813:android:9cf4a284ffc04984c9a7d4",
+        "android_client_info": {
+          "package_name": "edu.utap.mlbpocketguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335393050813-p6krrf04v0731jn5e1ckb84p2s16q8jg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.utap.mlbpocketguide",
+            "certificate_hash": "2fb82aeb093db7b45cb65f06caa874a46aeaa635"
+          }
+        },
+        {
+          "client_id": "335393050813-59fpucqtobn0i35l89kcaudtd8gvkbfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZiwc-bg0Is83IG-DQe97UDM53OJzKcGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335393050813-59fpucqtobn0i35l89kcaudtd8gvkbfc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
