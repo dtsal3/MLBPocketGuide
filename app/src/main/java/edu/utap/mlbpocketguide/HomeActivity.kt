@@ -1,19 +1,42 @@
 package edu.utap.mlbpocketguide
 
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import edu.utap.mlbpocketguide.api.PlayerRepository
-import edu.utap.mlbpocketguide.databinding.ActivityMainBinding
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import edu.utap.mlbpocketguide.databinding.HomeActivityBinding
+import edu.utap.mlbpocketguide.ui.favorites.FavoritesAdapter
+import edu.utap.mlbpocketguide.ui.favorites.FavoritesViewModel
+import edu.utap.mlbpocketguide.ui.favorites.ShowFavorites
+import edu.utap.mlbpocketguide.ui.search.SearchPlayers
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: HomeActivityBinding
-    lateinit var playersLV: ListView
-    lateinit var listAdapter: ArrayAdapter<String>
-    lateinit var searchView: SearchView
 
+    fun onClickListener() {
+        when (binding.finishButton.text) {
+            "Tap to Add Favorites" -> {
+                // swap to searching
+                binding.finishButton.text = "Finish Adding Favorites"
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragContainer, SearchPlayers.newInstance(), "search")
+                    .commitNow()
+            }
+            "Finish Adding Favorites" -> {
+                // swap to showing
+                binding.finishButton.text = "Tap to Add Favorites"
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragContainer, ShowFavorites.newInstance(), "favorites")
+                    .commitNow()
+            }
+            else -> {}
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,58 +44,17 @@ class HomeActivity : AppCompatActivity() {
         binding = HomeActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        playersLV = binding.playerLV
-        searchView = binding.playerSearch
-
-        val players = PlayerRepository().fetchData()
-        val listOfPlayers = mutableListOf<String>()
-
-        players.forEach {
-            val fullName = it.firstName + " " + it.lastName
-            listOfPlayers.add(fullName)
+        // Initialize the Search Functionality for adding new favorites
+        binding.finishButton.setOnClickListener {
+            onClickListener()
         }
 
-        // replace with one that allows us to set click listener and logo
-        // this doesn't actually work
-        listAdapter = ArrayAdapter<String> (
-            this,
-            android.R.layout.simple_list_item_1,
-            listOfPlayers
-        )
-        playersLV.adapter = listAdapter
-        playersLV.visibility = View.INVISIBLE
-
-        playersLV.setOnClickListener {
-
-        }
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (listOfPlayers.contains(query)) {
-                    listAdapter.filter.filter(query)
-                } else {
-                    // if query is not present we are displaying
-                    // a toast message as no  data found..
-                    Toast.makeText(this@HomeActivity, "No players found..", Toast.LENGTH_LONG)
-                        .show()
-                }
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                // if query text is change in that case we
-                // are filtering our adapter with
-                // new text on below line.
-                val q = newText?.length ?: 0
-                if (q > 0) {
-                    playersLV.visibility = View.VISIBLE
-                } else {
-                    playersLV.visibility = View.INVISIBLE
-                }
-                listAdapter.filter.filter(newText)
-                return false
-            }
-        })
+        // Initialize the Favorites section RV/VH and handle adding new favorites
+        //XXX Write me. Setup adapter.
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragContainer, ShowFavorites.newInstance(), "favorites")
+            .commitNow()
     }
+
 
 }
