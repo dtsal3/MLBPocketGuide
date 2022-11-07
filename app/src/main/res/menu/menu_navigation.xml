@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/favoriteMenu"
+        android:title="Favorites"
+        android:icon="@drawable/bos"/>
+    <item
+        android:id="@+id/playerMenu"
+        android:title="Players"
+        android:icon="@drawable/sea"/>
+    <item
+        android:id="@+id/matchupMenu"
+        android:title="Matchups"
+        android:icon="@drawable/mlb"/>
+
+    <item
+        android:id="@+id/profileMenu"
+        android:title="Profile"
+        android:icon="@drawable/lad"/>
+
+</menu>

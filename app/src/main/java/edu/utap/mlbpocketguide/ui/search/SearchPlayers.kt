@@ -11,13 +11,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import edu.utap.mlbpocketguide.api.PlayerRepository
-import edu.utap.mlbpocketguide.databinding.SearchFragBinding
+import edu.utap.mlbpocketguide.databinding.FragSearchBinding
 import edu.utap.mlbpocketguide.ui.favorites.FavoritesViewModel
 
 class SearchPlayers : Fragment(){
     private val viewModel: FavoritesViewModel by activityViewModels()
     lateinit var listAdapter: ArrayAdapter<String>
-    private var _binding: SearchFragBinding? = null
+    private var _binding: FragSearchBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     companion object {
@@ -32,7 +32,7 @@ class SearchPlayers : Fragment(){
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = SearchFragBinding.inflate(inflater, container, false)
+        _binding = FragSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -55,11 +55,18 @@ class SearchPlayers : Fragment(){
         )
         playersLV.adapter = listAdapter
         // when we select a player, try to add them to our RV of favorite players, or ignore if they are already there
-        playersLV.setOnItemClickListener { adapterView, view, i, l ->
-            Log.d("HomeActivity", "The i clicked on is: %s".format(i.toString()) )
-            Log.d("HomeActivity", "The adapter item clicked is: %s".format(listAdapter.getItem(i)))
+        playersLV.setOnItemClickListener { _, _, position, _ ->
+            Log.d("HomeActivity", "The i clicked on is: %s".format(position.toString()) )
+            Log.d("HomeActivity", "The adapter item clicked is: %s".format(listAdapter.getItem(position)))
+            val playerSelected = listAdapter.getItem(position)
+            if (viewModel.isFavorite(playerSelected!!)) {
+                Toast.makeText(requireContext(), "They are already a favorite!", Toast.LENGTH_LONG).show()
+            } else {
+                viewModel.addFavorite(playerSelected)
+            }
 
         }
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (listOfPlayers.contains(query)) {

@@ -7,7 +7,7 @@ import edu.utap.mlbpocketguide.api.PlayerRepository
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel: ViewModel() {
-    private var playerNames = MutableLiveData<String>()
+    private var playerNames = MutableLiveData<List<String>>()
     private var players = MutableLiveData<List<PlayerInfo>>()
     private var playerRepository = PlayerRepository()
 
@@ -16,7 +16,7 @@ class FavoritesViewModel: ViewModel() {
     init {
         Log.d("Tracing","We are in the init of the viewModel")
         viewModelScope.launch {
-            playerNames = MutableLiveData("Mookie Betts")
+            playerNames = MutableLiveData(mutableListOf("Mookie Betts"))
             val mookieBetts = playerRepository.fetchData().filter {
                 it.firstName == "Mookie"
                         && it.lastName == "Betts"
@@ -26,14 +26,44 @@ class FavoritesViewModel: ViewModel() {
         }
     }
 
-    val liveFavorites = MediatorLiveData<List<PlayerInfo>>().apply {
-        this.value = players.value
-    }
-
     fun observeLivingFavorites(): LiveData<List<PlayerInfo>> {
-        return liveFavorites
+        Log.d("FavoritesViewModel","In Observe Living Favorites!")
+        Log.d("FavoritesViewModel", "We are finding this for favorites: %s".format(players.value.toString()))
+        return players
     }
 
+    fun isFavorite(name: String): Boolean {
+        return playerNames.value?.contains(name) == true
+    }
+
+    // Ideally we'd add based on ID but the ListView serving users only has their name...
+    fun addFavorite(name: String) {
+        val namesList = playerNames.value!!.toMutableList()
+        namesList.add(name)
+        Log.d("AddFavorite","The new player names are %s".format(namesList.toString()))
+        val newPlayerInfo = playerRepository.fetchData().filter {
+            val combinedName = it.firstName + " " + it.lastName
+            combinedName == name
+        }
+        Log.d("AddFavorite","The new player is %s".format(newPlayerInfo.toString()))
+        val newPlayers = players.value!! + newPlayerInfo
+        Log.d("AddFavorite", "We are posting this to our players object: %s".format(newPlayers.toString()))
+        players.postValue(newPlayers)
+        playerNames.postValue(namesList)
+    }
+
+    fun removeFavorite(name: String) {
+        val namesList = playerNames.value!!.toMutableList()
+        namesList.remove(name)
+        val selectedPlayerInfo = playerRepository.fetchData().filter {
+            val combinedName = it.firstName + " " + it.lastName
+            combinedName == name
+        }
+        val newPlayers = players.value!!.toMutableList()
+        newPlayers.remove(selectedPlayerInfo[0])
+        players.postValue(newPlayers)
+        playerNames.postValue(namesList)
+    }
 
 }
 

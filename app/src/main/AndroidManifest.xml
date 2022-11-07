@@ -27,10 +27,30 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".HomeActivity"
+        <activity android:name=".ui.FavoritesActivity"
             android:parentActivityName=".MainActivity"
             android:label="homeActivity"
-            android:theme="@style/Theme.MLBPocketGuide"/>
+            android:theme="@style/Theme.MLBPocketGuide"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity android:name=".ui.AccountProfileActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="profileActivity"
+            android:theme="@style/Theme.MLBPocketGuide"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity android:name=".ui.PlayerProfileActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="playerProfileActivity"
+            android:theme="@style/Theme.MLBPocketGuide"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity android:name=".ui.MatchupToolActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="matchupToolActivity"
+            android:theme="@style/Theme.MLBPocketGuide"
+            android:windowSoftInputMode="adjustResize"
+            />
     </application>
 
 </manifest>

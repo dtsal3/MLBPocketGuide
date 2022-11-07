@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import edu.utap.mlbpocketguide.api.PlayerInfo
-import edu.utap.mlbpocketguide.databinding.FavPlayerRowBinding
+import edu.utap.mlbpocketguide.databinding.RvFavPlayerRowBinding
 
 
 class FavoritesAdapter(private val viewModel: FavoritesViewModel)
@@ -34,7 +34,7 @@ class FavoritesAdapter(private val viewModel: FavoritesViewModel)
         }
     }
 
-    inner class VH(val binding: FavPlayerRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class VH(val binding: RvFavPlayerRowBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(player: PlayerInfo) {
             Log.d("Tracing", "In bind within the adapter VH class")
@@ -49,7 +49,7 @@ class FavoritesAdapter(private val viewModel: FavoritesViewModel)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         Log.d("Tracing", "We are in onCreateViewHolder of the favorites adapter")
-        val binding = FavPlayerRowBinding.inflate(
+        val binding = RvFavPlayerRowBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false)
         return VH(binding)
@@ -60,6 +60,7 @@ class FavoritesAdapter(private val viewModel: FavoritesViewModel)
         // open the onePost view if we tap on the title
         holder.binding.removeButton.setOnClickListener {
            Log.d("FavoritesAdapter", "If I had code to remove a favorite from the adapter, it'd be here")
+            viewModel.removeFavorite(holder.binding.playerName.text.toString())
         }
     }
 }

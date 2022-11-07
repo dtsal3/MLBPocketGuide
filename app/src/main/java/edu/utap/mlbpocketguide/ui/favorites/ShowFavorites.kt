@@ -11,13 +11,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import edu.utap.mlbpocketguide.databinding.FavoritesFragBinding
+import edu.utap.mlbpocketguide.databinding.FragFavoritesBinding
 
 class ShowFavorites : Fragment(){
     lateinit var favoritesAdapter: FavoritesAdapter
     private val favoritesViewModel: FavoritesViewModel by activityViewModels()
     // lateinit var listAdapter: ArrayAdapter<String>
-    private var _binding: FavoritesFragBinding? = null
+    private var _binding: FragFavoritesBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     companion object {
@@ -32,7 +32,7 @@ class ShowFavorites : Fragment(){
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FavoritesFragBinding.inflate(inflater, container, false)
+        _binding = FragFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 

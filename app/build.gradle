@@ -53,5 +53,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0' // https://stackoverflow.com/questions/69817925/problem-duplicate-class-androidx-lifecycle-viewmodel-found-in-modules
+    implementation 'com.google.android.material:material:1.0.0' // https://www.geeksforgeeks.org/how-to-implement-bottom-navigation-with-activities-in-android/
 
 }

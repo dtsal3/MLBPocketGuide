@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import edu.utap.mlbpocketguide.databinding.ActivityMainBinding
+import edu.utap.mlbpocketguide.ui.FavoritesActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                 user!!.updateProfile(profileUpdates)
             }
             // launch the next activity
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, FavoritesActivity::class.java)
             startActivity(intent)
         } else {
             // Sign in failed. If response is null the user canceled the
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.continueAsGuestButton.setOnClickListener {
             // also launch the next activity
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, FavoritesActivity::class.java)
             startActivity(intent)
         }
 

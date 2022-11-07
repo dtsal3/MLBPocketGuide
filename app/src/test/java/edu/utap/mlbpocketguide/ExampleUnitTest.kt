@@ -1,5 +1,6 @@
 package edu.utap.mlbpocketguide
 
+import edu.utap.mlbpocketguide.api.PlayerRepository
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -11,7 +12,15 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun unique_repository() {
+        val players = PlayerRepository().fetchData()
+        val listOfPlayers = mutableListOf<String>()
+        players.forEach {
+            val fullName = it.firstName + " " + it.lastName
+            listOfPlayers.add(fullName)
+        }
+        val playersUnique = players.distinct().size
+        val namesUniques = listOfPlayers.distinct().size
+        assertEquals(playersUnique, namesUniques)
     }
 }
