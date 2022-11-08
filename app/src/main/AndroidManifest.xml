@@ -29,25 +29,25 @@
         </activity>
         <activity android:name=".ui.FavoritesActivity"
             android:parentActivityName=".MainActivity"
-            android:label="homeActivity"
+            android:label="Favorite Players"
             android:theme="@style/Theme.MLBPocketGuide"
             android:windowSoftInputMode="adjustResize"
             />
         <activity android:name=".ui.AccountProfileActivity"
             android:parentActivityName=".MainActivity"
-            android:label="profileActivity"
+            android:label="User Profile"
             android:theme="@style/Theme.MLBPocketGuide"
             android:windowSoftInputMode="adjustResize"
             />
         <activity android:name=".ui.PlayerProfileActivity"
             android:parentActivityName=".MainActivity"
-            android:label="playerProfileActivity"
+            android:label="Player Profile"
             android:theme="@style/Theme.MLBPocketGuide"
             android:windowSoftInputMode="adjustResize"
             />
         <activity android:name=".ui.MatchupToolActivity"
             android:parentActivityName=".MainActivity"
-            android:label="matchupToolActivity"
+            android:label="Player Matchups"
             android:theme="@style/Theme.MLBPocketGuide"
             android:windowSoftInputMode="adjustResize"
             />

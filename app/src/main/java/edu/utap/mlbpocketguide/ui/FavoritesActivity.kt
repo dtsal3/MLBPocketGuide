@@ -17,7 +17,7 @@ class FavoritesActivity : AppCompatActivity() {
                 // swap to searching
                 binding.finishButton.text = "Finish Adding Favorites"
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragContainer, SearchPlayers.newInstance(), "search")
+                    .replace(R.id.fragContainer, SearchPlayers.newInstance("searchFavorites"), "search")
                     .commitNow()
             }
             "Finish Adding Favorites" -> {

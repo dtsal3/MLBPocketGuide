@@ -13,16 +13,23 @@ import androidx.fragment.app.activityViewModels
 import edu.utap.mlbpocketguide.api.PlayerRepository
 import edu.utap.mlbpocketguide.databinding.FragSearchBinding
 import edu.utap.mlbpocketguide.ui.favorites.FavoritesViewModel
+import edu.utap.mlbpocketguide.ui.matchupprofile.ComparisonViewModel
 
 class SearchPlayers : Fragment(){
-    private val viewModel: FavoritesViewModel by activityViewModels()
+    private val favoritesViewModel: FavoritesViewModel by activityViewModels()
+    private val comparisonViewModel: ComparisonViewModel by activityViewModels()
     lateinit var listAdapter: ArrayAdapter<String>
     private var _binding: FragSearchBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     companion object {
-        fun newInstance(): SearchPlayers {
-            return SearchPlayers()
+        private val search = "search"
+        fun newInstance(searchMode: String): SearchPlayers {
+            val frag = SearchPlayers()
+            val bundle = Bundle()
+            bundle.putString(search, searchMode)
+            frag.arguments = bundle
+            return frag
         }
     }
 
@@ -54,18 +61,46 @@ class SearchPlayers : Fragment(){
             listOfPlayers
         )
         playersLV.adapter = listAdapter
-        // when we select a player, try to add them to our RV of favorite players, or ignore if they are already there
-        playersLV.setOnItemClickListener { _, _, position, _ ->
-            Log.d("HomeActivity", "The i clicked on is: %s".format(position.toString()) )
-            Log.d("HomeActivity", "The adapter item clicked is: %s".format(listAdapter.getItem(position)))
-            val playerSelected = listAdapter.getItem(position)
-            if (viewModel.isFavorite(playerSelected!!)) {
-                Toast.makeText(requireContext(), "They are already a favorite!", Toast.LENGTH_LONG).show()
-            } else {
-                viewModel.addFavorite(playerSelected)
-            }
 
+        // What mode are we searching for?
+        val searchMode = arguments?.getString(search)
+        // Determine what to do when selecting a player, based on what mode we are searching for
+        playersLV.setOnItemClickListener { _, _, position, _ ->
+            val playerSelected = listAdapter.getItem(position)
+            when (searchMode) {
+                "searchFavorites" -> {
+                    // when we select a player, try to add them to our RV of favorite players, or ignore if they are already there
+                    Log.d("HomeActivity", "The i clicked on is: %s".format(position.toString()))
+                    Log.d(
+                        "HomeActivity",
+                        "The adapter item clicked is: %s".format(listAdapter.getItem(position))
+                    )
+                    if (favoritesViewModel.isFavorite(playerSelected!!)) {
+                        Toast.makeText(
+                            requireContext(),
+                            "They are already a favorite!",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        favoritesViewModel.addFavorite(playerSelected)
+                    }
+                }
+                "searchProfiles" -> {
+                    // do nothing yet
+                    comparisonViewModel.setPlayerForProfile(playerSelected!!)
+                }
+                "searchPitchers" -> {
+                    // do nothing yet
+                    comparisonViewModel.setPitcherToCompare(playerSelected!!)
+                }
+                "searchHitters" -> {
+                    comparisonViewModel.setHitterToCompare(playerSelected!!)
+                }
+                else -> {}//do nothing
+            }
         }
+
+
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
