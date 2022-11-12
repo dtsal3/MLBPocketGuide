@@ -59,8 +59,8 @@ class FavoritesActivity : AppCompatActivity() {
                 }
                 R.id.playerMenu -> {
                     // launch the player landing page activity
-                    //val newIntent = Intent(this, PlayerProfileActivity::class.java)
-                    //startActivity(intent)
+                    val newIntent = Intent(this, PlayerProfileActivity::class.java)
+                    startActivity(newIntent)
                     true
                 }
                 R.id.matchupMenu -> {

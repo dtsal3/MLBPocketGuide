@@ -2,15 +2,25 @@ package edu.utap.mlbpocketguide.ui.matchupprofile
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import edu.utap.mlbpocketguide.api.FangraphsAPI
+import edu.utap.mlbpocketguide.api.FangraphsStats
 import edu.utap.mlbpocketguide.api.PlayerInfo
 import edu.utap.mlbpocketguide.api.PlayerRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ComparisonViewModel: ViewModel() {
     private lateinit var pitcherToCompare: PlayerInfo
     private lateinit var hitterToCompare: PlayerInfo
     private lateinit var playerProfile: PlayerInfo
+    private val fangraphsApi = FangraphsAPI.create()
     private val playerRepository = PlayerRepository()
+    private var pitcherStats = MutableLiveData<FangraphsStats>()
+    private var hitterStats = MutableLiveData<FangraphsStats>()
+    private var playerProfileStats = MutableLiveData<FangraphsStats>()
 
     // Helper to get a PlayerInfo object given a name
     fun getPlayer(name: String): PlayerInfo {
@@ -64,4 +74,25 @@ class ComparisonViewModel: ViewModel() {
         return playerProfile
     }
 
+    fun getStatistics(playerId: String, position: String, location: String) {
+        viewModelScope.launch(context = viewModelScope.coroutineContext + Dispatchers.IO) {
+            when (location) {
+                "playerProfile" -> {
+                    playerProfileStats.postValue(fangraphsApi.getStats(playerId, position).data)
+                }
+                "pitcherComparison" -> {
+                    pitcherStats.postValue(fangraphsApi.getStats(playerId, position).data)
+                }
+                "hitterComparison" -> {
+                    hitterStats.postValue(fangraphsApi.getStats(playerId, position).data)
+                }
+                else -> {}
+            }
+        }
+    }
+
+    fun observeLivingPlayerStats(): LiveData<FangraphsStats> {
+        return playerProfileStats
+    }
 }
+
