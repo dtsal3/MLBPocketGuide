@@ -18,10 +18,10 @@ import java.lang.reflect.Type
 
 interface FangraphsAPI {
 
-    @GET("?season=2022")
-    suspend fun getStats(@Query("playerId") playerId: String, @Query("position") position: String) : Response
-
     data class FangraphsResponse(val data: Response)
+
+    @GET("?season=2022")
+    suspend fun getStats(@Query("playerId") playerId: String, @Query("position") position: String) : FangraphsResponse
 
     companion object {
 
