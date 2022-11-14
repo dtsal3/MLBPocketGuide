@@ -1,21 +1,11 @@
 package edu.utap.mlbpocketguide.api
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONArray
 import org.json.JSONObject
-import retrofit2.Callback
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 import java.io.IOException
+import kotlin.collections.Map.Entry
 
 class FangraphsAPI {
 
@@ -23,7 +13,7 @@ class FangraphsAPI {
     // Because I couldn't really figure out the dynamic api response in a way that wouldn't cause my app to crash
     // https://stackoverflow.com/questions/71198581/using-okhttp-for-simple-get-request-in-kotlin-helper-class
     fun getStats(playerId: String, position: String) : FangraphsStats {
-        val newUrl = url + "&playerId=%s&position=%s".format(playerId,position)
+        val newUrl = url + "?playerId=%s&position=%s".format(playerId,position)
         Log.d("Tracing", "In getStats")
         Log.d("Tracing", "Our URL is %s".format(newUrl))
         val request = Request.Builder().url(newUrl).build()
@@ -41,7 +31,7 @@ class FangraphsAPI {
                     mutableMapOf<String, Long>(),
                     mutableMapOf<String, String>(),
                     mutableMapOf<String, Int>(),
-                    mutableMapOf<String, String>()
+                    mutableMapOf<String, ArrayList<Pair<Int, Long>>>()
                 )
         }
 
@@ -54,7 +44,37 @@ class FangraphsAPI {
         val comparisonStats = mutableMapOf<String, Long>()
         val profileCharacteristics = mutableMapOf<String, String>()
         val profileStatsCounting = mutableMapOf<String, Int>()
-        val profileStatsAvg = mutableMapOf<String, String>()
+        val profileStatsAvg = mutableMapOf<String, ArrayList<Pair<Int, Long>>>()
+        val dataObject = player.getJSONArray("data")
+        var dataCurrentSeason = JSONObject()
+
+        // build our season-chart data entries while we find the career totals
+        // Profile Stats: Graph - Batting Average, Slugging, ERA, FIP
+        val eraList = ArrayList<Pair<Int, Long>>()
+        val fipList = ArrayList<Pair<Int, Long>>()
+        val avgList = ArrayList<Pair<Int, Long>>()
+        val slgList = ArrayList<Pair<Int, Long>>()
+
+        for (i in 0 until dataObject.length()) {
+            val currentObject = dataObject.getJSONObject(i)
+            if (currentObject["aseason"] != 0 && currentObject["type"] == 0 ) {
+                Log.d("TracingStats", "Do entry logic for charts")
+                if (position == "P") {
+                    eraList.add(Pair(currentObject.getInt("aseason"), currentObject.getLong("ERA")))
+                    fipList.add(Pair(currentObject.getInt("aseason"), currentObject.getLong("FIP")))
+                } else {
+                    avgList.add(Pair(currentObject.getInt("aseason"), currentObject.getLong("AVG")))
+                    slgList.add(Pair(currentObject.getInt("aseason"), currentObject.getLong("SLG")))
+                }
+            }
+            if (currentObject["aseason"] == 0 && currentObject["type"] == -1) {
+                dataCurrentSeason = currentObject
+            }
+        }
+        profileStatsAvg["ERA"] = eraList
+        profileStatsAvg["FIP"] = fipList
+        profileStatsAvg["AVG"] = avgList
+        profileStatsAvg["SLG"] = slgList
 
         // Profile Characteristics: Age, Position, Hit, Throw
         val playerInfoObject = player.getJSONObject("playerInfo")
@@ -65,16 +85,15 @@ class FangraphsAPI {
 
         // Profile Stats: PieChart (Hitter) - PA, HR, Non-HR Hits, BB, SO, Non-SO Outs
         // Profile Stats: PieChart (Pitcher) - TBF, HR, Non-HR Hits, BB, SO, Non-SO Outs
-        val dataObject = player.getJSONArray("data")
-        val hr = dataObject.getJSONObject(0).getInt("HR")
-        val h = dataObject.getJSONObject(0).getInt("H")
-        val bb = dataObject.getJSONObject(0).getInt("BB")
-        val ibb = dataObject.getJSONObject(0).getInt("IBB")
-        val hbp = dataObject.getJSONObject(0).getInt("HBP")
-        val so = dataObject.getJSONObject(0).getInt("SO")
+        val hr = dataCurrentSeason.getInt("HR")
+        val h = dataCurrentSeason.getInt("H")
+        val bb = dataCurrentSeason.getInt("BB")
+        val ibb = dataCurrentSeason.getInt("IBB")
+        val hbp = dataCurrentSeason.getInt("HBP")
+        val so = dataCurrentSeason.getInt("SO")
         val total = when (position) {
-            "P" -> dataObject.getJSONObject(0).getInt("TBF")
-            else -> dataObject.getJSONObject(0).getInt("PA")
+            "P" -> dataCurrentSeason.getInt("TBF")
+            else -> dataCurrentSeason.getInt("PA")
         }
 
         profileStatsCounting["TOTAL"] = total
@@ -85,19 +104,19 @@ class FangraphsAPI {
         profileStatsCounting["OUTS"] = total - so - h - bb - ibb - hbp
 
         // Comparison Stats: BA, K%, BB%, GB%, Pull%, Hard%, wFB/c, wOther/c, Contact%
-        val avg = dataObject.getJSONObject(0).getLong("AVG")
-        val kp = dataObject.getJSONObject(0).getLong("K%")
-        val bbp = dataObject.getJSONObject(0).getLong("BB%")
-        val gbp = dataObject.getJSONObject(0).getLong("GB%")
-        val pp = dataObject.getJSONObject(0).getLong("Pull%")
-        val hp = dataObject.getJSONObject(0).getLong("Hard%")
-        val valFB = dataObject.getJSONObject(0).getLong("wFB/C")
-        val valOther = dataObject.getJSONObject(0).getLong("wSL/C")
-                        + dataObject.getJSONObject(0).getLong("wCT/C")
-                        + dataObject.getJSONObject(0).getLong("wCB/C")
-                        + dataObject.getJSONObject(0).getLong("wCH/C")
-                        + dataObject.getJSONObject(0).getLong("wSF/C")
-        val contactP = dataObject.getJSONObject(0).getLong("Contact%")
+        val avg = dataCurrentSeason.getLong("AVG")
+        val kp = dataCurrentSeason.getLong("K%")
+        val bbp = dataCurrentSeason.getLong("BB%")
+        val gbp = dataCurrentSeason.getLong("GB%")
+        val pp = dataCurrentSeason.getLong("Pull%")
+        val hp = dataCurrentSeason.getLong("Hard%")
+        val valFB = dataCurrentSeason.getLong("wFB/C")
+        val valOther = dataCurrentSeason.getLong("wSL/C")
+                        + dataCurrentSeason.getLong("wCT/C")
+                        + dataCurrentSeason.getLong("wCB/C")
+                        + dataCurrentSeason.getLong("wCH/C")
+                        + dataCurrentSeason.getLong("wSF/C")
+        val contactP = dataCurrentSeason.getLong("Contact%")
 
         comparisonStats["AVG"] = avg
         comparisonStats["KP"] = kp
@@ -109,14 +128,11 @@ class FangraphsAPI {
         comparisonStats["valOTHER"] = valOther
         comparisonStats["ContactP"] = contactP
 
-        // Profile Stats: Graph - Batting Average,
-
-
         return FangraphsStats(comparisonStats, profileCharacteristics, profileStatsCounting, profileStatsAvg)
     }
 
     companion object {
         private val client = OkHttpClient()
-        private val url = "https://www.fangraphs.com/api/players/stats/common?season=2022"
+        private val url = "https://www.fangraphs.com/api/players/stats"
     }
 }
