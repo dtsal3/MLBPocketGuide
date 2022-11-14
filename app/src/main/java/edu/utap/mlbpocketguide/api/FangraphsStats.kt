@@ -1,22 +1,19 @@
 package edu.utap.mlbpocketguide.api
 
-import com.google.gson.annotations.SerializedName
-import org.json.JSONArray
-import org.json.JSONObject
+// So, I don't really have the OkHttp / Retrofit example from class working
+// But I wanted to mirror the architecture, even if the implementation is different
+// this class takes in a JSONObject from our FanGraphs response and turns it into a
+// FangraphsStats object to use in our viewmodel
 
 data class FangraphsStats (
-    @SerializedName("playerInfo")
-    val playerInfo: JSONObject,
-    @SerializedName("teamInfo")
-    val teamInfo: JSONObject,
-    @SerializedName("data")
-    val data: String,
-    @SerializedName("fielding")
-    val fielding: String,
-    @SerializedName("positionProfile")
-    val positionProfile: JSONObject,
-    @SerializedName("prospect")
-    val prospect: String,
-    @SerializedName("news")
-    val news: String,
+
+    // Initialize our objects
+    val comparisonStats: MutableMap<String, Long>,
+    val profileCharacteristics: MutableMap<String, String>,
+    val profileStatsCounting: MutableMap<String, Int>,
+    val profileStatsAvg: MutableMap<String, String>
+
 )
+
+
+

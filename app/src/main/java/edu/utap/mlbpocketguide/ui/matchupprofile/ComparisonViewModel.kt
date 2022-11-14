@@ -11,12 +11,13 @@ import edu.utap.mlbpocketguide.api.PlayerInfo
 import edu.utap.mlbpocketguide.api.PlayerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 class ComparisonViewModel: ViewModel() {
     private lateinit var pitcherToCompare: PlayerInfo
     private lateinit var hitterToCompare: PlayerInfo
     private lateinit var playerProfile: PlayerInfo
-    private val fangraphsApi = FangraphsAPI.create()
+    private val fangraphsApi = FangraphsAPI()
     private val playerRepository = PlayerRepository()
     private var pitcherStats = MutableLiveData<FangraphsStats>()
     private var hitterStats = MutableLiveData<FangraphsStats>()
@@ -78,13 +79,13 @@ class ComparisonViewModel: ViewModel() {
         viewModelScope.launch(context = viewModelScope.coroutineContext + Dispatchers.IO) {
             when (location) {
                 "playerProfile" -> {
-                    playerProfileStats.postValue(fangraphsApi.getStats(playerId, position).data)
+                    playerProfileStats.postValue(fangraphsApi.getStats(playerId, position))
                 }
                 "pitcherComparison" -> {
-                    pitcherStats.postValue(fangraphsApi.getStats(playerId, position).data)
+                    pitcherStats.postValue(fangraphsApi.getStats(playerId, position))
                 }
                 "hitterComparison" -> {
-                    hitterStats.postValue(fangraphsApi.getStats(playerId, position).data)
+                    hitterStats.postValue(fangraphsApi.getStats(playerId, position))
                 }
                 else -> {}
             }
