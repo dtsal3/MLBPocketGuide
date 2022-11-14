@@ -26,7 +26,10 @@ class PlayerProfileActivity : AppCompatActivity() {
         comparisonViewModel.getStatistics("19556","OF","playerProfile")
 
         comparisonViewModel.observeLivingPlayerStats().observe(this, Observer {
-            binding.textView.text = it.profileCharacteristics.toString()
+            binding.textView1.text = it.profileCharacteristics.toString()
+            binding.textView2.text = it.profileStatsAvg.toString()
+            binding.textView3.text = it.profileStatsCounting.toString()
+            binding.textView4.text = it.comparisonStats.toString()
             Log.d("Tracing", it.profileCharacteristics.toString())
         })
 

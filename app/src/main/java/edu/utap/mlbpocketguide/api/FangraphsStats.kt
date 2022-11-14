@@ -10,10 +10,10 @@ import kotlin.collections.Map.Entry
 data class FangraphsStats (
 
     // Initialize our objects
-    val comparisonStats: MutableMap<String, Long>,
+    val comparisonStats: MutableMap<String, Double>,
     val profileCharacteristics: MutableMap<String, String>,
     val profileStatsCounting: MutableMap<String, Int>,
-    val profileStatsAvg: MutableMap<String, ArrayList<Pair<Int, Long>>>
+    val profileStatsAvg: MutableMap<String, ArrayList<Pair<Int, Double>>>
 
 )
 

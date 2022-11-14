@@ -28,10 +28,10 @@ class FangraphsAPI {
             Log.d("FangraphsAPI", "Caught an exception trying to get the stats from FanGraphs")
             // return an empty stats object to satisfy compiler, we will check if its populated before setting later
             return FangraphsStats(
-                    mutableMapOf<String, Long>(),
+                    mutableMapOf<String, Double>(),
                     mutableMapOf<String, String>(),
                     mutableMapOf<String, Int>(),
-                    mutableMapOf<String, ArrayList<Pair<Int, Long>>>()
+                    mutableMapOf<String, ArrayList<Pair<Int, Double>>>()
                 )
         }
 
@@ -41,30 +41,30 @@ class FangraphsAPI {
     fun toPlayerStats(player: JSONObject, position: String): FangraphsStats {
 
         // Initialize our objects
-        val comparisonStats = mutableMapOf<String, Long>()
+        val comparisonStats = mutableMapOf<String, Double>()
         val profileCharacteristics = mutableMapOf<String, String>()
         val profileStatsCounting = mutableMapOf<String, Int>()
-        val profileStatsAvg = mutableMapOf<String, ArrayList<Pair<Int, Long>>>()
+        val profileStatsAvg = mutableMapOf<String, ArrayList<Pair<Int, Double>>>()
         val dataObject = player.getJSONArray("data")
         var dataCurrentSeason = JSONObject()
 
         // build our season-chart data entries while we find the career totals
         // Profile Stats: Graph - Batting Average, Slugging, ERA, FIP
-        val eraList = ArrayList<Pair<Int, Long>>()
-        val fipList = ArrayList<Pair<Int, Long>>()
-        val avgList = ArrayList<Pair<Int, Long>>()
-        val slgList = ArrayList<Pair<Int, Long>>()
+        val eraList = ArrayList<Pair<Int, Double>>()
+        val fipList = ArrayList<Pair<Int, Double>>()
+        val avgList = ArrayList<Pair<Int, Double>>()
+        val slgList = ArrayList<Pair<Int, Double>>()
 
         for (i in 0 until dataObject.length()) {
             val currentObject = dataObject.getJSONObject(i)
             if (currentObject["aseason"] != 0 && currentObject["type"] == 0 ) {
                 Log.d("TracingStats", "Do entry logic for charts")
                 if (position == "P") {
-                    eraList.add(Pair(currentObject.getInt("aseason"), currentObject.getLong("ERA")))
-                    fipList.add(Pair(currentObject.getInt("aseason"), currentObject.getLong("FIP")))
+                    eraList.add(Pair(currentObject.getInt("aseason"), currentObject.getDouble("ERA")))
+                    fipList.add(Pair(currentObject.getInt("aseason"), currentObject.getDouble("FIP")))
                 } else {
-                    avgList.add(Pair(currentObject.getInt("aseason"), currentObject.getLong("AVG")))
-                    slgList.add(Pair(currentObject.getInt("aseason"), currentObject.getLong("SLG")))
+                    avgList.add(Pair(currentObject.getInt("aseason"), currentObject.getDouble("AVG")))
+                    slgList.add(Pair(currentObject.getInt("aseason"), currentObject.getDouble("SLG")))
                 }
             }
             if (currentObject["aseason"] == 0 && currentObject["type"] == -1) {
@@ -104,19 +104,19 @@ class FangraphsAPI {
         profileStatsCounting["OUTS"] = total - so - h - bb - ibb - hbp
 
         // Comparison Stats: BA, K%, BB%, GB%, Pull%, Hard%, wFB/c, wOther/c, Contact%
-        val avg = dataCurrentSeason.getLong("AVG")
-        val kp = dataCurrentSeason.getLong("K%")
-        val bbp = dataCurrentSeason.getLong("BB%")
-        val gbp = dataCurrentSeason.getLong("GB%")
-        val pp = dataCurrentSeason.getLong("Pull%")
-        val hp = dataCurrentSeason.getLong("Hard%")
-        val valFB = dataCurrentSeason.getLong("wFB/C")
-        val valOther = dataCurrentSeason.getLong("wSL/C")
-                        + dataCurrentSeason.getLong("wCT/C")
-                        + dataCurrentSeason.getLong("wCB/C")
-                        + dataCurrentSeason.getLong("wCH/C")
-                        + dataCurrentSeason.getLong("wSF/C")
-        val contactP = dataCurrentSeason.getLong("Contact%")
+        val avg = dataCurrentSeason.getDouble("AVG")
+        val kp = dataCurrentSeason.getDouble("K%")
+        val bbp = dataCurrentSeason.getDouble("BB%")
+        val gbp = dataCurrentSeason.getDouble("GB%")
+        val pp = dataCurrentSeason.getDouble("Pull%")
+        val hp = dataCurrentSeason.getDouble("Hard%")
+        val valFB = dataCurrentSeason.getDouble("wFB/C")
+        val valOther = dataCurrentSeason.getDouble("wSL/C")
+                        + dataCurrentSeason.getDouble("wCT/C")
+                        + dataCurrentSeason.getDouble("wCB/C")
+                        + dataCurrentSeason.getDouble("wCH/C")
+                        + dataCurrentSeason.getDouble("wSF/C")
+        val contactP = dataCurrentSeason.getDouble("Contact%")
 
         comparisonStats["AVG"] = avg
         comparisonStats["KP"] = kp

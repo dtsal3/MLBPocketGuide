@@ -6,6 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="TracingCompa" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="AutoImportSettings">
@@ -22,6 +23,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/api/FangraphsAPI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/api/FangraphsAPI.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/api/FangraphsStats.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/api/FangraphsStats.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/PlayerProfileActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/PlayerProfileActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/matchupprofile/ComparisonViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/matchupprofile/ComparisonViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_player_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_player_profile.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

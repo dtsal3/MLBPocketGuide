@@ -22,6 +22,7 @@ class ComparisonViewModel: ViewModel() {
     private var pitcherStats = MutableLiveData<FangraphsStats>()
     private var hitterStats = MutableLiveData<FangraphsStats>()
     private var playerProfileStats = MutableLiveData<FangraphsStats>()
+    private val playersFetched = mutableMapOf<String, FangraphsStats>()
 
     // Helper to get a PlayerInfo object given a name
     fun getPlayer(name: String): PlayerInfo {
@@ -75,19 +76,33 @@ class ComparisonViewModel: ViewModel() {
         return playerProfile
     }
 
+    fun postValue(playersStats: FangraphsStats, location: String) {
+        when (location) {
+            "playerProfile" -> {
+                playerProfileStats.postValue(playersStats)
+            }
+            "pitcherComparison" -> {
+                pitcherStats.postValue(playersStats)
+            }
+            "hitterComparison" -> {
+                hitterStats.postValue(playersStats)
+            }
+            else -> {}
+        }
+    }
+
     fun getStatistics(playerId: String, position: String, location: String) {
-        viewModelScope.launch(context = viewModelScope.coroutineContext + Dispatchers.IO) {
-            when (location) {
-                "playerProfile" -> {
-                    playerProfileStats.postValue(fangraphsApi.getStats(playerId, position))
-                }
-                "pitcherComparison" -> {
-                    pitcherStats.postValue(fangraphsApi.getStats(playerId, position))
-                }
-                "hitterComparison" -> {
-                    hitterStats.postValue(fangraphsApi.getStats(playerId, position))
-                }
-                else -> {}
+        Log.d("TracingComparisonViewModel","Our playerid is %s and our fetched players already are %s".format(playerId, playersFetched.keys))
+        if (playerId in playersFetched.keys) {
+            Log.d("TracingComparisonViewModel","We already have this player")
+            postValue(playersFetched.get(playerId)!!, location)
+        } else {
+            viewModelScope.launch(context = viewModelScope.coroutineContext + Dispatchers.IO) {
+                Log.d("TracingComparisonViewModel", "Fetching statistics for the player")
+                val playerStatsToShare = fangraphsApi.getStats(playerId, position)
+                playersFetched[playerId] = playerStatsToShare
+                Log.d("TracingComparisonViewModel","After adding playerid %s our fetched players are %s".format(playerId, playersFetched.keys))
+                postValue(playerStatsToShare, location)
             }
         }
     }
@@ -95,5 +110,6 @@ class ComparisonViewModel: ViewModel() {
     fun observeLivingPlayerStats(): LiveData<FangraphsStats> {
         return playerProfileStats
     }
+
 }
 
