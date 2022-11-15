@@ -1,6 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/searchProfileRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <Button
+            android:id="@+id/searchAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="Search Players"
+            />
+
+        <Button
+            android:id="@+id/fetchProfileData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle"
+            android:gravity="center"
+            android:textSize="12dp"
+            android:text="Fetch Data!"
+            app:layout_constraintTop_toBottomOf="@+id/searchProfileRow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/searchFavorites"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:text="Select a Favorite"
+            />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/playerProfileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Player Name"
+        app:layout_constraintTop_toBottomOf="@id/searchProfileRow"
+        />
+
+    <LinearLayout
+        android:padding="8dp"
+        android:id="@+id/playerAttributesrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/playerProfileName"
+        >
+
+        <TextView
+            android:id="@+id/profileAge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Age"
+            />
+        <TextView
+            android:id="@+id/profilePos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Position"
+            />
+        <TextView
+            android:id="@+id/profileHit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Hit"
+            />
+        <TextView
+            android:id="@+id/profileThrow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Throw"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/hittingOutcomes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingVertical="16dp"
+        android:paddingLeft="8dp"
+        android:text="Hitting Outcomes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/playerAttributesrow"
+        />
+    <TextView
+        android:id="@+id/pieChartView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/hittingOutcomes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="pie chart"
+        />
+
+    <TextView
+        android:id="@+id/hittingAverages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingVertical="16dp"
+        android:paddingLeft="8dp"
+        android:text="Hitting Averages"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pieChartView"
+        />
+    <TextView
+        android:id="@+id/lineGraphView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/hittingAverages"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="line chart"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

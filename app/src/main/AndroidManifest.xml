@@ -27,27 +27,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".ui.FavoritesActivity"
+        <activity android:name=".ui.HomeActivity"
             android:parentActivityName=".MainActivity"
             android:label="Favorite Players"
-            android:theme="@style/Theme.MLBPocketGuide"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".ui.AccountProfileActivity"
-            android:parentActivityName=".MainActivity"
-            android:label="User Profile"
-            android:theme="@style/Theme.MLBPocketGuide"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".ui.PlayerProfileActivity"
-            android:parentActivityName=".MainActivity"
-            android:label="Player Profile"
-            android:theme="@style/Theme.MLBPocketGuide"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".ui.MatchupToolActivity"
-            android:parentActivityName=".MainActivity"
-            android:label="Player Matchups"
             android:theme="@style/Theme.MLBPocketGuide"
             android:windowSoftInputMode="adjustPan"
             />

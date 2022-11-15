@@ -63,12 +63,10 @@ class SearchPlayers : Fragment(){
 
         val playersLV = binding.playerLV
         val searchView = binding.playerSearch
-        val players = PlayerRepository().fetchData()
-        val listOfPlayers = mutableListOf<String>()
-        players.forEach {
-            val fullName = it.firstName + " " + it.lastName
-            listOfPlayers.add(fullName)
-        }
+        // Initialize the players data, and build our filtering lists, and set up our full names list
+        val playersRepo = PlayerRepository()
+        playersRepo.buildLists()
+        val listOfPlayers = playersRepo.getAllNames()
         setAdapter(listOfPlayers, playersLV)
 
         // What mode are we searching for?
@@ -101,13 +99,13 @@ class SearchPlayers : Fragment(){
                 // only allow us to choose pitchers
                 binding.finishSearchingButton.visibility = View.INVISIBLE
                 binding.finishSearchingButton.isClickable = false
-                setAdapter(PlayerRepository().getPitcherNames(), playersLV)
+                setAdapter(playersRepo.getPitcherNames(), playersLV)
             }
             "searchHitters" -> {
                 // only allow us to choose hitters
                 binding.finishSearchingButton.visibility = View.INVISIBLE
                 binding.finishSearchingButton.isClickable = false
-                setAdapter(PlayerRepository().getHitterNames(), playersLV)
+                setAdapter(playersRepo.getHitterNames(), playersLV)
             }
 
         }

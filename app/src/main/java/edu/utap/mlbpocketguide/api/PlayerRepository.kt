@@ -1516,31 +1516,36 @@ class PlayerRepository {
             PlayerInfo("Jordan", "Groshans", "11/10/1999", "MIA", "NL", "SS", "23794", "R", "R"),
             PlayerInfo("Trevor", "Stephan", "11/25/1995", "CLE", "AL", "P", "19932", "R", "R")
         )
+
+        val hitterNames = mutableListOf<String>()
+        val pitcherNames = mutableListOf<String>()
+        val playerNames = mutableListOf<String>()
+    }
+
+    fun buildLists() {
+        for (playerInfo in playerList) {
+            val fullName = playerInfo.firstName + " " + playerInfo.lastName
+            playerNames.add(fullName)
+            when (playerInfo.pos) {
+                "P" -> pitcherNames.add(fullName)
+                else -> hitterNames.add(fullName)
+            }
+        }
     }
 
     fun fetchData(): List<PlayerInfo> {
         return playerList
     }
 
+    fun getAllNames(): List<String> {
+        return playerNames
+    }
+
     fun getPitcherNames(): List<String> {
-        val pitcherNames = mutableListOf<String>()
-        for (playerInfo in playerList) {
-            if (playerInfo.pos == "P") {
-                val fullName = playerInfo.firstName + " " + playerInfo.lastName
-                pitcherNames.add(fullName)
-            }
-        }
         return pitcherNames
     }
 
     fun getHitterNames(): List<String> {
-        val hitterNames = mutableListOf<String>()
-        for (playerInfo in playerList) {
-            if (playerInfo.pos != "P") {
-                val fullName = playerInfo.firstName + " " + playerInfo.lastName
-                hitterNames.add(fullName)
-            }
-        }
         return hitterNames
     }
 }

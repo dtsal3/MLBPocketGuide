@@ -1,6 +1,5 @@
 package edu.utap.mlbpocketguide.ui
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import edu.utap.mlbpocketguide.R
@@ -10,7 +9,7 @@ import edu.utap.mlbpocketguide.ui.matchupprofile.ShowPlayerComparison
 import edu.utap.mlbpocketguide.ui.matchupprofile.ShowPlayerProfile
 import edu.utap.mlbpocketguide.ui.userprofile.ShowUserProfile
 
-class FavoritesActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
