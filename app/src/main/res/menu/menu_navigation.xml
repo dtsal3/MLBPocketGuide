@@ -4,19 +4,19 @@
     <item
         android:id="@+id/favoriteMenu"
         android:title="Favorites"
-        android:icon="@drawable/bos"/>
+        android:icon="@drawable/ic_baseline_favorite_24"/>
     <item
         android:id="@+id/playerMenu"
         android:title="Players"
-        android:icon="@drawable/sea"/>
+        android:icon="@drawable/ic_baseline_star_24"/>
     <item
         android:id="@+id/matchupMenu"
         android:title="Matchups"
-        android:icon="@drawable/mlb"/>
+        android:icon="@drawable/ic_baseline_supervisor_account_24"/>
 
     <item
         android:id="@+id/profileMenu"
         android:title="Profile"
-        android:icon="@drawable/lad"/>
+        android:icon="@drawable/ic_baseline_person_24"/>
 
 </menu>

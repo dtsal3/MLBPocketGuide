@@ -6,31 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.ActivityHomeBinding
 import edu.utap.mlbpocketguide.ui.favorites.ShowFavorites
-import edu.utap.mlbpocketguide.ui.search.SearchPlayers
+import edu.utap.mlbpocketguide.ui.matchupprofile.ShowPlayerComparison
+import edu.utap.mlbpocketguide.ui.matchupprofile.ShowPlayerProfile
+import edu.utap.mlbpocketguide.ui.userprofile.ShowUserProfile
 
 class FavoritesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
-
-    fun onClickListener() {
-        when (binding.finishButton.text) {
-            "Tap to Add Favorites" -> {
-                // swap to searching
-                binding.finishButton.text = "Finish Adding Favorites"
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragContainer, SearchPlayers.newInstance("searchFavorites"), "search")
-                    .commitNow()
-            }
-            "Finish Adding Favorites" -> {
-                // swap to showing
-                binding.finishButton.text = "Tap to Add Favorites"
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragContainer, ShowFavorites.newInstance(), "favorites")
-                    .commitNow()
-            }
-            else -> {}
-        }
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +19,7 @@ class FavoritesActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize the Search Functionality for adding new favorites
-        binding.finishButton.setOnClickListener {
-            onClickListener()
-        }
-
-        // Initialize the Favorites section RV/VH and handle adding new favorites
-        //XXX Write me. Setup adapter.
+        // Initialize the Favorites section RV/VH
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragContainer, ShowFavorites.newInstance(), "favorites")
             .commitNow()
@@ -54,25 +29,51 @@ class FavoritesActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.favoriteMenu -> {
-                    // do Nothing, we are already here
+                    val favFrag = supportFragmentManager.findFragmentByTag("favorites")
+                    if (favFrag != null && favFrag.isVisible()) {
+                        // do nothing, we are already here
+                    } else {
+                        // launch this fragment
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragContainer, ShowFavorites.newInstance(), "favorites")
+                            .commitNow()
+                    }
                     true
                 }
                 R.id.playerMenu -> {
-                    // launch the player landing page activity
-                    val newIntent = Intent(this, PlayerProfileActivity::class.java)
-                    startActivity(newIntent)
+                    val playerFrag = supportFragmentManager.findFragmentByTag("playerProfile")
+                    if (playerFrag != null && playerFrag.isVisible()) {
+                        // do nothing, we are already here
+                    } else {
+                        // launch this fragment
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragContainer, ShowPlayerProfile.newInstance(), "playerProfile")
+                            .commitNow()
+                    }
                     true
                 }
                 R.id.matchupMenu -> {
-                    // launch the player matchup page activity
-                    //val newIntent = Intent(this, PlayerProfileActivity::class.java)
-                    //startActivity(intent)
+                    val comparisonFrag = supportFragmentManager.findFragmentByTag("playerComparison")
+                    if (comparisonFrag != null && comparisonFrag.isVisible()) {
+                        // do nothing, we are already here
+                    } else {
+                        // launch this fragment
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragContainer, ShowPlayerComparison.newInstance(), "playerComparison")
+                            .commitNow()
+                    }
                     true
                 }
                 R.id.profileMenu -> {
-                    // launch the profile page of the signed in account
-                    val newIntent = Intent(this, AccountProfileActivity::class.java)
-                    startActivity(newIntent)
+                    val userProfileFrag = supportFragmentManager.findFragmentByTag("userProfile")
+                    if (userProfileFrag != null && userProfileFrag.isVisible()) {
+                        // do nothing, we are already here
+                    } else {
+                        // launch this fragment
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragContainer, ShowUserProfile.newInstance(), "userProfile")
+                            .commitNow()
+                    }
                     true
                 }
 

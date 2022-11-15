@@ -1,6 +1,6 @@
 package edu.utap.mlbpocketguide.ui.favorites
 
-import android.R
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.FragFavoritesBinding
+import edu.utap.mlbpocketguide.ui.search.SearchPlayers
 
 class ShowFavorites : Fragment(){
     lateinit var favoritesAdapter: FavoritesAdapter
@@ -58,6 +60,12 @@ class ShowFavorites : Fragment(){
             favoritesAdapter.submitList(it)
             favoritesAdapter.notifyDataSetChanged()
         })
+
+        binding.startSearchingButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragContainer, SearchPlayers.newInstance("searchFavorites"), "search")
+                .commitNow()
+        }
     }
 
 }

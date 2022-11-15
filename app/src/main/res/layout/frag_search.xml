@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <android.widget.Button
+        android:id="@+id/finishSearchingButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Finish Adding Favorites"
+        />
+
     <android.widget.SearchView
         android:id="@+id/playerSearch"
         android:layout_width="0dp"
@@ -12,7 +22,7 @@
         android:queryHint="Add Another Favorite Player"
         android:iconifiedByDefault="false"
         android:text="Tap to Add Favorites"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/finishSearchingButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />

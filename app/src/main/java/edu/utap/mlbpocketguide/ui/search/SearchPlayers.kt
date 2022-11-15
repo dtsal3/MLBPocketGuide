@@ -6,14 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.api.PlayerRepository
 import edu.utap.mlbpocketguide.databinding.FragSearchBinding
 import edu.utap.mlbpocketguide.ui.favorites.FavoritesViewModel
+import edu.utap.mlbpocketguide.ui.favorites.ShowFavorites
 import edu.utap.mlbpocketguide.ui.matchupprofile.ComparisonViewModel
+import edu.utap.mlbpocketguide.ui.matchupprofile.ShowPlayerComparison
 
 class SearchPlayers : Fragment(){
     private val favoritesViewModel: FavoritesViewModel by activityViewModels()
@@ -43,6 +48,15 @@ class SearchPlayers : Fragment(){
         return binding.root
     }
 
+    fun setAdapter(listOfPlayerNames: List<String>, LV: ListView) {
+        listAdapter = ArrayAdapter<String> (
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            listOfPlayerNames
+        )
+        LV.adapter = listAdapter
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(javaClass.simpleName, "onViewCreated")
@@ -55,15 +69,49 @@ class SearchPlayers : Fragment(){
             val fullName = it.firstName + " " + it.lastName
             listOfPlayers.add(fullName)
         }
-        listAdapter = ArrayAdapter<String> (
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            listOfPlayers
-        )
-        playersLV.adapter = listAdapter
+        setAdapter(listOfPlayers, playersLV)
 
         // What mode are we searching for?
         val searchMode = arguments?.getString(search)
+        // We determine what list to serve based on the search mode
+        when (searchMode) {
+            "searchFavorites" -> {
+                // choose any player not already in favorites and keep finish button
+                binding.finishSearchingButton.visibility = View.VISIBLE
+                binding.finishSearchingButton.isClickable = true
+                val favs = favoritesViewModel.fetchFavorites()
+                listOfPlayers.filterNot {
+                    favs.contains(it)
+                }
+                setAdapter(favs, playersLV)
+            }
+            "searchAnyProfiles" -> {
+                // choose anything, but hide the finish button
+                binding.finishSearchingButton.visibility = View.INVISIBLE
+                binding.finishSearchingButton.isClickable = false
+                setAdapter(listOfPlayers, playersLV)
+            }
+            "searchFavoriteProfiles" -> {
+                // choose anything, but hide the finish button
+                binding.finishSearchingButton.visibility = View.INVISIBLE
+                binding.finishSearchingButton.isClickable = false
+                setAdapter(favoritesViewModel.fetchFavorites(), playersLV)
+            }
+            "searchPitchers" -> {
+                // only allow us to choose pitchers
+                binding.finishSearchingButton.visibility = View.INVISIBLE
+                binding.finishSearchingButton.isClickable = false
+                setAdapter(PlayerRepository().getPitcherNames(), playersLV)
+            }
+            "searchHitters" -> {
+                // only allow us to choose hitters
+                binding.finishSearchingButton.visibility = View.INVISIBLE
+                binding.finishSearchingButton.isClickable = false
+                setAdapter(PlayerRepository().getHitterNames(), playersLV)
+            }
+
+        }
+
         // Determine what to do when selecting a player, based on what mode we are searching for
         playersLV.setOnItemClickListener { _, _, position, _ ->
             val playerSelected = listAdapter.getItem(position)
@@ -86,20 +134,29 @@ class SearchPlayers : Fragment(){
                     }
                 }
                 "searchProfiles" -> {
-                    // do nothing yet
                     comparisonViewModel.setPlayerForProfile(playerSelected!!)
                 }
                 "searchPitchers" -> {
-                    // do nothing yet
                     comparisonViewModel.setPitcherToCompare(playerSelected!!)
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragContainer, ShowPlayerComparison.newInstance(), "playerComparison")
+                        .commitNow()
                 }
                 "searchHitters" -> {
                     comparisonViewModel.setHitterToCompare(playerSelected!!)
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragContainer, ShowPlayerComparison.newInstance(), "playerComparison")
+                        .commitNow()
                 }
                 else -> {}//do nothing
             }
         }
 
+        binding.finishSearchingButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragContainer, ShowFavorites.newInstance(), "favorites")
+                .commitNow()
+        }
 
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

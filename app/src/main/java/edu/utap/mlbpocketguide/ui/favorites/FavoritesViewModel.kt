@@ -65,5 +65,13 @@ class FavoritesViewModel: ViewModel() {
         playerNames.postValue(namesList)
     }
 
+    fun fetchFavorites(): List<String> {
+        val favoritesNum = playerNames.value?.size ?: 0
+        if (favoritesNum > 0) {
+            return playerNames.value!!
+        }
+        return listOf<String>()
+    }
+
 }
 
