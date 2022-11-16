@@ -24,6 +24,10 @@ class ComparisonViewModel: ViewModel() {
     private var playerProfileStats = MutableLiveData<FangraphsStats>()
     private val playersFetched = mutableMapOf<String, FangraphsStats>()
 
+    private val pitcherComparisonKey = "pitcherComparison"
+    private val hitterComparisonKey = "hitterComparison"
+    private val playerProfileKey = "playerProfile"
+
     // Helper to get a PlayerInfo object given a name
     fun getPlayer(name: String): PlayerInfo {
         val newPlayerInfo = playerRepository.fetchData().filter {
@@ -63,6 +67,22 @@ class ComparisonViewModel: ViewModel() {
         return hitterToCompare
     }
 
+    // Fetch the stats for the comparison
+    fun fetchComparisonStats() {
+        val pitcherToFetch = getPitcherToCompare()
+        if (pitcherToFetch.fanGraphsID in playersFetched.keys) {
+            postValue(playersFetched.get(pitcherToFetch.fanGraphsID)!!, pitcherComparisonKey)
+        } else {
+            getStatistics(pitcherToFetch.fanGraphsID, pitcherToFetch.pos, pitcherComparisonKey)
+        }
+        val hitterToFetch = getHitterToCompare()
+        if (hitterToFetch.fanGraphsID in playersFetched.keys) {
+            postValue(playersFetched.get(hitterToFetch.fanGraphsID)!!, hitterComparisonKey)
+        } else {
+            getStatistics(hitterToFetch.fanGraphsID, hitterToFetch.pos, hitterComparisonKey)
+        }
+    }
+
     // Handle setting and getting the player for a profile view
     fun checkPlayerProfile(): Boolean {
         return this::playerProfile.isInitialized
@@ -76,15 +96,25 @@ class ComparisonViewModel: ViewModel() {
         return playerProfile
     }
 
+    // Fetch the stats for the player profile page
+    fun fetchPlayerProfileStats() {
+        val playerToFetch = getPlayerForProfile()
+        if (playerToFetch.fanGraphsID in playersFetched.keys) {
+            postValue(playersFetched.get(playerToFetch.fanGraphsID)!!, playerProfileKey)
+        } else {
+            getStatistics(playerToFetch.fanGraphsID, playerToFetch.pos, playerProfileKey)
+        }
+    }
+
     fun postValue(playersStats: FangraphsStats, location: String) {
         when (location) {
-            "playerProfile" -> {
+            playerProfileKey -> {
                 playerProfileStats.postValue(playersStats)
             }
-            "pitcherComparison" -> {
+            pitcherComparisonKey -> {
                 pitcherStats.postValue(playersStats)
             }
-            "hitterComparison" -> {
+            hitterComparisonKey -> {
                 hitterStats.postValue(playersStats)
             }
             else -> {}
@@ -109,6 +139,14 @@ class ComparisonViewModel: ViewModel() {
 
     fun observeLivingPlayerStats(): LiveData<FangraphsStats> {
         return playerProfileStats
+    }
+
+    fun observeLivingPitcherStats(): LiveData<FangraphsStats> {
+        return pitcherStats
+    }
+
+    fun observeLivingHitterStats(): LiveData<FangraphsStats> {
+        return hitterStats
     }
 
 }

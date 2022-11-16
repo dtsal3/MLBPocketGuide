@@ -19,6 +19,7 @@ import edu.utap.mlbpocketguide.ui.favorites.FavoritesViewModel
 import edu.utap.mlbpocketguide.ui.favorites.ShowFavorites
 import edu.utap.mlbpocketguide.ui.matchupprofile.ComparisonViewModel
 import edu.utap.mlbpocketguide.ui.matchupprofile.ShowPlayerComparison
+import edu.utap.mlbpocketguide.ui.matchupprofile.ShowPlayerProfile
 
 class SearchPlayers : Fragment(){
     private val favoritesViewModel: FavoritesViewModel by activityViewModels()
@@ -65,7 +66,6 @@ class SearchPlayers : Fragment(){
         val searchView = binding.playerSearch
         // Initialize the players data, and build our filtering lists, and set up our full names list
         val playersRepo = PlayerRepository()
-        playersRepo.buildLists()
         val listOfPlayers = playersRepo.getAllNames()
         setAdapter(listOfPlayers, playersLV)
 
@@ -78,10 +78,11 @@ class SearchPlayers : Fragment(){
                 binding.finishSearchingButton.visibility = View.VISIBLE
                 binding.finishSearchingButton.isClickable = true
                 val favs = favoritesViewModel.fetchFavorites()
-                listOfPlayers.filterNot {
+                Log.d("TracingSearch","The favorites to filter out are: %s".format(favs.toString()))
+                val notFavorites = listOfPlayers.filterNot {
                     favs.contains(it)
                 }
-                setAdapter(favs, playersLV)
+                setAdapter(notFavorites, playersLV)
             }
             "searchAnyProfiles" -> {
                 // choose anything, but hide the finish button
@@ -90,7 +91,7 @@ class SearchPlayers : Fragment(){
                 setAdapter(listOfPlayers, playersLV)
             }
             "searchFavoriteProfiles" -> {
-                // choose anything, but hide the finish button
+                // choose any favorites, and hide the finish button
                 binding.finishSearchingButton.visibility = View.INVISIBLE
                 binding.finishSearchingButton.isClickable = false
                 setAdapter(favoritesViewModel.fetchFavorites(), playersLV)
@@ -131,8 +132,17 @@ class SearchPlayers : Fragment(){
                         favoritesViewModel.addFavorite(playerSelected)
                     }
                 }
-                "searchProfiles" -> {
+                "searchAnyProfiles" -> {
                     comparisonViewModel.setPlayerForProfile(playerSelected!!)
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragContainer, ShowPlayerProfile.newInstance(), "playerProfile")
+                        .commitNow()
+                }
+                "searchFavoriteProfiles" -> {
+                    comparisonViewModel.setPlayerForProfile(playerSelected!!)
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragContainer, ShowPlayerProfile.newInstance(), "playerProfile")
+                        .commitNow()
                 }
                 "searchPitchers" -> {
                     comparisonViewModel.setPitcherToCompare(playerSelected!!)

@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorAccent"
         >
         <Button
             android:id="@+id/searchAll"
@@ -62,12 +63,53 @@
 
     <LinearLayout
         android:padding="8dp"
-        android:id="@+id/playerAttributesrow"
+        android:id="@+id/playerAttributesRowLabels"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/playerProfileName"
         >
+        <TextView
+            android:id="@+id/profileAgeLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Age"
+            />
+        <TextView
+            android:id="@+id/profilePosLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Position"
+            />
+        <TextView
+            android:id="@+id/profileHitLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Hit"
+            />
+        <TextView
+            android:id="@+id/profileThrowLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Throw"
+            />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/playerAttributesRow"
+        android:paddingHorizontal="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/playerAttributesRowLabels"
+        >
         <TextView
             android:id="@+id/profileAge"
             android:layout_width="0dp"
@@ -113,7 +155,7 @@
         android:paddingLeft="8dp"
         android:text="Hitting Outcomes"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/playerAttributesrow"
+        app:layout_constraintTop_toBottomOf="@id/playerAttributesRow"
         />
     <TextView
         android:id="@+id/pieChartView"

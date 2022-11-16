@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.FragMatchupComparisonBinding
 import edu.utap.mlbpocketguide.ui.favorites.FavoritesViewModel
@@ -37,6 +38,7 @@ class ShowPlayerComparison: Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set Up Choosing Players
         if (comparisonViewModel.checkHitterToCompare()) {
             val fullName = comparisonViewModel.getHitterToCompare().firstName + " " + comparisonViewModel.getHitterToCompare().lastName
             binding.comparisonHitterName.text = fullName
@@ -58,6 +60,38 @@ class ShowPlayerComparison: Fragment(){
                 .commitNow()
         }
 
+        // Set up Fetching Data
+        binding.fetchStatsButton.setOnClickListener {
+            if (comparisonViewModel.checkHitterToCompare() && comparisonViewModel.checkPitcherToCompare()) {
+                comparisonViewModel.fetchComparisonStats()
+            }
+        }
+
+        // Listen for and display the data
+        // Pitcher
+        comparisonViewModel.observeLivingPitcherStats().observe(viewLifecycleOwner, Observer {
+            binding.pitcherBA.text = it.comparisonStats.get("AVG").toString()
+            binding.pitcherKp.text = it.comparisonStats.get("KP").toString()
+            binding.pitcherBBp.text = it.comparisonStats.get("BBP").toString()
+            binding.pitcherGBp.text = it.comparisonStats.get("GBP").toString()
+            binding.pitcherPp.text = it.comparisonStats.get("PullP").toString()
+            binding.pitcherHp.text = it.comparisonStats.get("HardP").toString()
+            binding.pitcherFBv.text = it.comparisonStats.get("valFB").toString()
+            binding.pitcherOv.text = it.comparisonStats.get("valOTHER").toString()
+            binding.pitcherCp.text = it.comparisonStats.get("ContactP").toString()
+        })
+        // Hitter
+        comparisonViewModel.observeLivingHitterStats().observe(viewLifecycleOwner, Observer {
+            binding.hitterBA.text = it.comparisonStats.get("AVG").toString()
+            binding.hitterKp.text = it.comparisonStats.get("KP").toString()
+            binding.hitterBBp.text = it.comparisonStats.get("BBP").toString()
+            binding.hitterGBp.text = it.comparisonStats.get("GBP").toString()
+            binding.hitterPp.text = it.comparisonStats.get("PullP").toString()
+            binding.hitterHp.text = it.comparisonStats.get("HardP").toString()
+            binding.hitterFBv.text = it.comparisonStats.get("valFB").toString()
+            binding.hitterOv.text = it.comparisonStats.get("valOTHER").toString()
+            binding.hitterCp.text = it.comparisonStats.get("ContactP").toString()
+        })
 
     }
 

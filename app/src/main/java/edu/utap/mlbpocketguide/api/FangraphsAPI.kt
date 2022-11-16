@@ -60,6 +60,7 @@ class FangraphsAPI {
             if (currentObject["aseason"] != 0 && currentObject["type"] == 0 ) {
                 Log.d("TracingStats", "Do entry logic for charts")
                 if (position == "P") {
+                    Log.d("TracingStats", "We are adding to our ERA lists for pitchers")
                     eraList.add(Pair(currentObject.getInt("aseason"), currentObject.getDouble("ERA")))
                     fipList.add(Pair(currentObject.getInt("aseason"), currentObject.getDouble("FIP")))
                 } else {
@@ -110,12 +111,12 @@ class FangraphsAPI {
         val gbp = dataCurrentSeason.getDouble("GB%")
         val pp = dataCurrentSeason.getDouble("Pull%")
         val hp = dataCurrentSeason.getDouble("Hard%")
-        val valFB = dataCurrentSeason.getDouble("wFB/C")
-        val valOther = dataCurrentSeason.getDouble("wSL/C")
-                        + dataCurrentSeason.getDouble("wCT/C")
-                        + dataCurrentSeason.getDouble("wCB/C")
-                        + dataCurrentSeason.getDouble("wCH/C")
-                        + dataCurrentSeason.getDouble("wSF/C")
+        val valFB = dataCurrentSeason.optDouble("wFB/C")
+        val valOther = dataCurrentSeason.optDouble("wSL/C")
+                        + dataCurrentSeason.optDouble("wCT/C")
+                        + dataCurrentSeason.optDouble("wCB/C")
+                        + dataCurrentSeason.optDouble("wCH/C")
+                        + dataCurrentSeason.optDouble("wSF/C")
         val contactP = dataCurrentSeason.getDouble("Contact%")
 
         comparisonStats["AVG"] = avg
