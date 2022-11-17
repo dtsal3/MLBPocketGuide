@@ -23,6 +23,7 @@ import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.api.FangraphsStats
 import edu.utap.mlbpocketguide.databinding.FragPlayerProfileBinding
 import edu.utap.mlbpocketguide.ui.search.SearchPlayers
+import java.lang.Math.floor
 
 class ShowPlayerProfile: Fragment(){
 
@@ -116,6 +117,12 @@ class ShowPlayerProfile: Fragment(){
         lineChart.setTouchEnabled(false)
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         lineChart.xAxis.labelRotationAngle = -30f
+        lineChart.xAxis.setDrawGridLines(false)
+        lineChart.axisLeft.axisMinimum = 0f
+        lineChart.axisLeft.setDrawGridLines(false)
+        lineChart.axisRight.setDrawLabels(false)
+        lineChart.axisRight.setDrawGridLines(false)
+        lineChart.legend.isEnabled = false
 
         // Listen for and display the data
         comparisonViewModel.observeLivingPlayerStats().observe(viewLifecycleOwner) { it ->
@@ -155,15 +162,22 @@ class ShowPlayerProfile: Fragment(){
                 }
                 else -> {
                     stat = "AVG"
+                    lineChart.axisLeft.axisMaximum = 0.45f
                 }
             }
             val chartData = it.profileStatsAvg[stat]
             val chartValues = arrayListOf<Entry>()
+            var maxEra = 0f
             chartData!!.forEach {
+                if (it.second.toFloat() > maxEra) {maxEra = it.second.toFloat()}
                 chartValues.add(Entry(it.first.toFloat(), it.second.toFloat()))
+            }
+            if(stat == "ERA") {
+                lineChart.axisLeft.axisMaximum = floor(maxEra.toDouble()+1).toFloat()
             }
             val lineDataSet = LineDataSet(chartValues,"")
             val lineData = LineData(lineDataSet)
+
             lineChart.data = lineData
             lineChart.invalidate()
 
