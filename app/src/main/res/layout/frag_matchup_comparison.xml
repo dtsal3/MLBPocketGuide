@@ -94,6 +94,8 @@
                 android:background="@drawable/ic_outline_info_24"
                 android:backgroundTint="@color/gray"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+
                 />
 
         </LinearLayout>
@@ -247,6 +249,8 @@
                 android:background="@drawable/ic_outline_info_24"
                 android:backgroundTint="@color/gray"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+
                 />
 
     </LinearLayout>
@@ -401,6 +405,8 @@
             android:background="@drawable/ic_outline_info_24"
             android:backgroundTint="@color/gray"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+
             />
 
 
