@@ -22,15 +22,15 @@ class FavoritesAdapter(private val viewModel: FavoritesViewModel)
             return oldItem.lastName == newItem.lastName && oldItem.firstName == newItem.firstName
         }
         override fun areContentsTheSame(oldItem: PlayerInfo, newItem: PlayerInfo): Boolean {
-            return oldItem.firstName == oldItem.firstName &&
-                    oldItem.lastName == oldItem.lastName &&
-                    oldItem.birth == oldItem.birth &&
-                    oldItem.team == oldItem.team &&
-                    oldItem.lg == oldItem.lg &&
-                    oldItem.pos == oldItem.pos &&
-                    oldItem.fanGraphsID == oldItem.fanGraphsID &&
-                    oldItem.bats == oldItem.bats &&
-                    oldItem.throws == oldItem.throws
+            return oldItem.firstName == newItem.firstName &&
+                    oldItem.lastName == newItem.lastName &&
+                    oldItem.birth == newItem.birth &&
+                    oldItem.team == newItem.team &&
+                    oldItem.lg == newItem.lg &&
+                    oldItem.pos == newItem.pos &&
+                    oldItem.fanGraphsID == newItem.fanGraphsID &&
+                    oldItem.bats == newItem.bats &&
+                    oldItem.throws == newItem.throws
         }
     }
 

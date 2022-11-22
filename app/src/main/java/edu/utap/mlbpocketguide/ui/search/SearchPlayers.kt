@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.api.PlayerRepository
 import edu.utap.mlbpocketguide.databinding.FragSearchBinding
@@ -185,6 +186,33 @@ class SearchPlayers : Fragment(){
                 }
                 listAdapter.filter.filter(newText)
                 return false
+            }
+        })
+
+        // We want to launch a toast based on whether or not we successfully added a favorite, but have no access to the context
+        favoritesViewModel.addStatusFailure.observe(viewLifecycleOwner, Observer { status ->
+            status?.let {
+                //Reset status value at first to prevent multitriggering
+                //and to be available to trigger action again
+                favoritesViewModel.addStatusFailure.value = null
+                Toast.makeText(
+                    requireContext(),
+                    "Sorry, there was an error adding your favorite. Try again!",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+
+        favoritesViewModel.removeStatusFailure.observe(viewLifecycleOwner, Observer { status ->
+            status?.let {
+                //Reset status value at first to prevent multitriggering
+                //and to be available to trigger action again
+                favoritesViewModel.removeStatusFailure.value = null
+                Toast.makeText(
+                    requireContext(),
+                    "Sorry, there was an error removing your favorite. Try again!",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
 

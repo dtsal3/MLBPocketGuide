@@ -122,6 +122,7 @@ class ShowPlayerProfile: Fragment(){
         lineChart.axisLeft.setDrawGridLines(false)
         lineChart.axisRight.setDrawLabels(false)
         lineChart.axisRight.setDrawGridLines(false)
+        lineChart.axisRight.axisLineColor = ContextCompat.getColor(this.requireContext(), R.color.white)
         lineChart.legend.isEnabled = false
 
         // Listen for and display the data
