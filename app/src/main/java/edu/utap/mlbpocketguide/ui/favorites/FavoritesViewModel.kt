@@ -37,12 +37,12 @@ class FavoritesViewModel: ViewModel() {
                         val playerMetasToPost = mutableListOf<FavoriteMeta>()
                         val playerNamesToPost = mutableListOf<String>()
                         val playersToPost = mutableListOf<PlayerInfo>()
-                        result.documents.forEach{
-                            val currentPlayerMeta = it.toObject(FavoriteMeta::class.java)
+                        result.documents.forEach{ playerMeta ->
+                            val currentPlayerMeta = playerMeta.toObject(FavoriteMeta::class.java)
                             playerMetasToPost.add(currentPlayerMeta!!)
                             playerNamesToPost.add(currentPlayerMeta.playerName)
-                            val playerToAddToPlayers = playerRepository.fetchData().filter {
-                                val fullName = it.firstName + " " + it.lastName
+                            val playerToAddToPlayers = playerRepository.fetchData().filter { player ->
+                                val fullName = player.firstName + " " + player.lastName
                                 fullName == currentPlayerMeta.playerName
                             }
                             playersToPost.add(playerToAddToPlayers[0])
@@ -70,24 +70,18 @@ class FavoritesViewModel: ViewModel() {
         return playerNames.value?.contains(name) == true
     }
 
-    // helpers to enable our safe call with the elvis operator below
-    fun setNamesList(name: String): List<String> {
-        return mutableListOf(name)
-    }
-
-    fun setPlayersList(newPlayerInfo: List<PlayerInfo>): List<PlayerInfo> {
-        return newPlayerInfo
-    }
-
-    fun setMetasList(favoriteMeta: FavoriteMeta): List<FavoriteMeta> {
-        return mutableListOf(favoriteMeta)
-    }
-
     // Ideally we'd add based on ID but the ListView serving users only has their name...
     fun addFavorite(name: String) {
-        // Start with adding the name to our list of names, if it hasn't been initialized we need to init the names list
-        val namesList = playerNames.value?.toMutableList()
-        namesList?.add(name) ?: setNamesList(name)
+        // Start with adding the name to our list of names,
+        val namesList: List<String>
+        // if it hasn't been initialized we need to init the names list
+        if (playerNames.value == null) {
+            namesList = listOf(name)
+        } else {
+            namesList = playerNames.value!!.toMutableList()
+            namesList.add(name)
+        }
+
         Log.d("AddFavorite","The new player names are %s".format(namesList.toString()))
         // Now build the player info from the name and add to list of player infos
         val newPlayerInfo = playerRepository.fetchData().filter {
@@ -95,7 +89,12 @@ class FavoritesViewModel: ViewModel() {
             combinedName == name
         }
         Log.d("AddFavorite","The new player is %s".format(newPlayerInfo.toString()))
-        val newPlayers = players.value?.plus(newPlayerInfo) ?: setPlayersList(newPlayerInfo)
+        //val newPlayers = players.value?.plus(newPlayerInfo) ?: setPlayersList(newPlayerInfo)
+        val newPlayers: List<PlayerInfo> = if (players.value != null) {
+            players.value!! + newPlayerInfo
+        } else {
+            newPlayerInfo
+        }
 
         // Add to firestore too and only post new values on success
         // We check that the player selected is not already a favorite before adding so we should be protected from dupes
@@ -104,7 +103,11 @@ class FavoritesViewModel: ViewModel() {
                 ownerUid = authUser!!.uid,
                 playerName = name
             )
-            val newMetas = playerMetaList.value?.plus(favoriteMeta) ?: setMetasList(favoriteMeta)
+            val newMetas: List<FavoriteMeta> = if (playerMetaList.value != null) {
+                playerMetaList.value!!.plus(favoriteMeta)
+            } else {
+                listOf(favoriteMeta)
+            }
             db.collection(rootCollection)
                 .add(favoriteMeta)
                 .addOnSuccessListener {
@@ -152,7 +155,7 @@ class FavoritesViewModel: ViewModel() {
                     playerNames.postValue(namesList)
                     playerMetaList.postValue(newMetas)
                 }
-                .addOnFailureListener { e ->
+                .addOnFailureListener {
                     removeStatusFailure.value = true
                 }
         } else {
@@ -163,11 +166,12 @@ class FavoritesViewModel: ViewModel() {
     }
 
     fun fetchFavorites(): List<String> {
+        Log.d("TracingFavorites", "We are fetching our favorites, which is: %s".format(playerNames.value.toString()))
         val favoritesNum = playerNames.value?.size ?: 0
         if (favoritesNum > 0) {
             return playerNames.value!!
         }
-        return listOf<String>()
+        return listOf()
     }
 
 }
