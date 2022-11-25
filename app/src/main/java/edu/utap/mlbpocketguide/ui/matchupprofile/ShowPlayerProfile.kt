@@ -129,7 +129,7 @@ class ShowPlayerProfile: Fragment(){
         comparisonViewModel.observeLivingPlayerStats().observe(viewLifecycleOwner) { it ->
             // Update Characteristics
             binding.profileAge.text = it.profileCharacteristics["playerAge"]
-            binding.profilePos.text = it.profileCharacteristics["playerPosition"]
+            binding.profilePos.text = it.profileCharacteristics["playerPosition"]!!.split("/")[0] // I don't like how it looks with multiple positions, so we show the primary
             binding.profileThrow.text = it.profileCharacteristics["playerThrow"]
             binding.profileHit.text = it.profileCharacteristics["playerHit"]
 

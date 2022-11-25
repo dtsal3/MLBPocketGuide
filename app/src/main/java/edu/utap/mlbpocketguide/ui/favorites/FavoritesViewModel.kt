@@ -11,9 +11,11 @@ import edu.utap.mlbpocketguide.model.FavoriteMeta
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel: ViewModel() {
+    private var playerRepository = PlayerRepository()
+    // Generally speaking, having to maintain these three data objects is a bad idea, lots of opportunity to be out of sync
+    // Ideally, I would refactor to have a handler that we call to keep all three tog
     private var playerNames = MutableLiveData<List<String>>()
     private var players = MutableLiveData<List<PlayerInfo>>()
-    private var playerRepository = PlayerRepository()
     private var playerMetaList = MutableLiveData<List<FavoriteMeta>>()
     private var authUser = Firebase.auth.currentUser
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -21,9 +23,6 @@ class FavoritesViewModel: ViewModel() {
     var addStatusFailure = MutableLiveData<Boolean?>()
     var removeStatusFailure = MutableLiveData<Boolean?>()
 
-
-
-    // but we want to launch in a state that is initialized to the AWW subreddit
     init {
         Log.d("Tracing","We are in the init of the viewModel")
         viewModelScope.launch {
@@ -56,16 +55,8 @@ class FavoritesViewModel: ViewModel() {
                         Log.d(javaClass.simpleName, "favoritePlayers fetch FAILED ", it)
                     }
             } else {
-                // The guests always start with Mookie Betts and Brayan Bello
-                playerNames = MutableLiveData(mutableListOf("Mookie Betts", "Brayan Bello"))
-                val mookieBetts = playerRepository.fetchData().filter {
-                    (it.firstName == "Mookie" && it.lastName == "Betts")
-                            ||
-                    (it.firstName == "Brayan" && it.lastName == "Bello")
-                }
-                players = MutableLiveData(mookieBetts)
+                // The guests starts with no favorites, do nothing
             }
-            Log.d("Tracing","And after adding mookie, our players length is %s".format(players.value?.size))
         }
     }
 
@@ -79,17 +70,32 @@ class FavoritesViewModel: ViewModel() {
         return playerNames.value?.contains(name) == true
     }
 
+    // helpers to enable our safe call with the elvis operator below
+    fun setNamesList(name: String): List<String> {
+        return mutableListOf(name)
+    }
+
+    fun setPlayersList(newPlayerInfo: List<PlayerInfo>): List<PlayerInfo> {
+        return newPlayerInfo
+    }
+
+    fun setMetasList(favoriteMeta: FavoriteMeta): List<FavoriteMeta> {
+        return mutableListOf(favoriteMeta)
+    }
+
     // Ideally we'd add based on ID but the ListView serving users only has their name...
     fun addFavorite(name: String) {
-        val namesList = playerNames.value!!.toMutableList()
-        namesList.add(name)
+        // Start with adding the name to our list of names, if it hasn't been initialized we need to init the names list
+        val namesList = playerNames.value?.toMutableList()
+        namesList?.add(name) ?: setNamesList(name)
         Log.d("AddFavorite","The new player names are %s".format(namesList.toString()))
+        // Now build the player info from the name and add to list of player infos
         val newPlayerInfo = playerRepository.fetchData().filter {
             val combinedName = it.firstName + " " + it.lastName
             combinedName == name
         }
         Log.d("AddFavorite","The new player is %s".format(newPlayerInfo.toString()))
-        val newPlayers = players.value!! + newPlayerInfo
+        val newPlayers = players.value?.plus(newPlayerInfo) ?: setPlayersList(newPlayerInfo)
 
         // Add to firestore too and only post new values on success
         // We check that the player selected is not already a favorite before adding so we should be protected from dupes
@@ -98,12 +104,14 @@ class FavoritesViewModel: ViewModel() {
                 ownerUid = authUser!!.uid,
                 playerName = name
             )
+            val newMetas = playerMetaList.value?.plus(favoriteMeta) ?: setMetasList(favoriteMeta)
             db.collection(rootCollection)
                 .add(favoriteMeta)
                 .addOnSuccessListener {
                     Log.d("AddFavorite", "We are posting this to our players object: %s".format(newPlayers.toString()))
                     players.postValue(newPlayers)
                     playerNames.postValue(namesList)
+                    playerMetaList.postValue(newMetas)
                 }
                 .addOnFailureListener {
                     addStatusFailure.value = true
@@ -117,27 +125,32 @@ class FavoritesViewModel: ViewModel() {
     }
 
     fun removeFavorite(name: String) {
+        // Remove them from the list of names
         val namesList = playerNames.value!!.toMutableList()
         namesList.remove(name)
         val selectedPlayerInfo = playerRepository.fetchData().filter {
             val combinedName = it.firstName + " " + it.lastName
             combinedName == name
         }
+        // and remove them from the players info object
         val newPlayers = players.value!!.toMutableList()
         newPlayers.remove(selectedPlayerInfo[0])
 
-        val favoriteMetaToRemove = playerMetaList.value!!.filter {
-            it.playerName == name
-        }
-
         // If signed in, we need to remove from firestore too
         if (authUser?.uid != null) {
+            // we should be guaranteed to be in the meta list
+            val favoriteMetaToRemove = playerMetaList.value!!.filter {
+                it.playerName == name
+            }
+            val newMetas = playerMetaList.value!!.toMutableList()
+            newMetas.remove(favoriteMetaToRemove[0])
             db.collection(rootCollection)
                 .document(favoriteMetaToRemove[0].firestoreID)
                 .delete()
                 .addOnSuccessListener {
                     players.postValue(newPlayers)
                     playerNames.postValue(namesList)
+                    playerMetaList.postValue(newMetas)
                 }
                 .addOnFailureListener { e ->
                     removeStatusFailure.value = true

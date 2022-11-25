@@ -15,7 +15,6 @@ import edu.utap.mlbpocketguide.ui.userprofile.ShowUserProfile
 
 class ShowPlayerComparison: Fragment(){
 
-    private val favoritesViewModel: FavoritesViewModel by activityViewModels()
     private val comparisonViewModel: ComparisonViewModel by activityViewModels()
     private var _binding: FragMatchupComparisonBinding? = null
     private val binding get() = _binding!!
@@ -70,27 +69,27 @@ class ShowPlayerComparison: Fragment(){
         // Listen for and display the data
         // Pitcher
         comparisonViewModel.observeLivingPitcherStats().observe(viewLifecycleOwner, Observer {
-            binding.pitcherBA.text = it.comparisonStats.get("AVG").toString()
-            binding.pitcherKp.text = it.comparisonStats.get("KP").toString()
-            binding.pitcherBBp.text = it.comparisonStats.get("BBP").toString()
-            binding.pitcherGBp.text = it.comparisonStats.get("GBP").toString()
-            binding.pitcherPp.text = it.comparisonStats.get("PullP").toString()
-            binding.pitcherHp.text = it.comparisonStats.get("HardP").toString()
-            binding.pitcherFBv.text = it.comparisonStats.get("valFB").toString()
-            binding.pitcherOv.text = it.comparisonStats.get("valOTHER").toString()
-            binding.pitcherCp.text = it.comparisonStats.get("ContactP").toString()
+            binding.pitcherBA.text = String.format("%.3f", it.comparisonStats.get("AVG"))
+            binding.pitcherKp.text = String.format("%.1f", 100 * it.comparisonStats.get("KP")!!) + "%"
+            binding.pitcherBBp.text = String.format("%.1f", 100 * it.comparisonStats.get("BBP")!!) + "%"
+            binding.pitcherGBp.text = String.format("%.1f", 100 * it.comparisonStats.get("GBP")!!) + "%"
+            binding.pitcherPp.text = String.format("%.1f", 100 * it.comparisonStats.get("PullP")!!) + "%"
+            binding.pitcherHp.text = String.format("%.1f", 100 * it.comparisonStats.get("HardP")!!) + "%"
+            binding.pitcherFBv.text = String.format("%.3f", it.comparisonStats.get("valFB"))
+            binding.pitcherOv.text = String.format("%.3f", it.comparisonStats.get("valOTHER"))
+            binding.pitcherCp.text = String.format("%.1f", 100 * it.comparisonStats.get("ContactP")!!) + "%"
         })
         // Hitter
         comparisonViewModel.observeLivingHitterStats().observe(viewLifecycleOwner, Observer {
-            binding.hitterBA.text = it.comparisonStats.get("AVG").toString()
-            binding.hitterKp.text = it.comparisonStats.get("KP").toString()
-            binding.hitterBBp.text = it.comparisonStats.get("BBP").toString()
-            binding.hitterGBp.text = it.comparisonStats.get("GBP").toString()
-            binding.hitterPp.text = it.comparisonStats.get("PullP").toString()
-            binding.hitterHp.text = it.comparisonStats.get("HardP").toString()
-            binding.hitterFBv.text = it.comparisonStats.get("valFB").toString()
-            binding.hitterOv.text = it.comparisonStats.get("valOTHER").toString()
-            binding.hitterCp.text = it.comparisonStats.get("ContactP").toString()
+            binding.hitterBA.text = String.format("%.3f", it.comparisonStats.get("AVG"))
+            binding.hitterKp.text = String.format("%.1f", 100*it.comparisonStats.get("KP")!!) + "%"
+            binding.hitterBBp.text = String.format("%.1f", 100*it.comparisonStats.get("BBP")!!) + "%"
+            binding.hitterGBp.text = String.format("%.1f", 100*it.comparisonStats.get("GBP")!!) + "%"
+            binding.hitterPp.text = String.format("%.1f", 100*it.comparisonStats.get("PullP")!!) + "%"
+            binding.hitterHp.text = String.format("%.1f", 100*it.comparisonStats.get("HardP")!!) + "%"
+            binding.hitterFBv.text = String.format("%.3f", it.comparisonStats.get("valFB"))
+            binding.hitterOv.text = String.format("%.3f", it.comparisonStats.get("valOTHER"))
+            binding.hitterCp.text = String.format("%.1f", 100 * it.comparisonStats.get("ContactP")!!) + "%"
         })
 
     }

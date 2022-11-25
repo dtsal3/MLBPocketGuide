@@ -6,7 +6,13 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- User Profile Page Strings -->
+    <string name="email">Email:  </string>
+    <string name="password">Password:  </string>
+    <string name="clearFavorites">Clear Favorites</string>
+    <string name="signOut">Sign Out or Log In</string>
+    <string name="changePassword">Change Password</string>
+    <string name="my_account">My Account</string>
 </resources>

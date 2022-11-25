@@ -11,6 +11,7 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+    // We rely on the assumption that a player only shows up once in the repository
     @Test
     fun unique_repository() {
         val players = PlayerRepository().fetchData()

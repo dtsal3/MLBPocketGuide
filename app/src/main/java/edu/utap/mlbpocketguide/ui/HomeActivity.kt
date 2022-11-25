@@ -1,6 +1,7 @@
 package edu.utap.mlbpocketguide.ui
 
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.ActivityHomeBinding
@@ -17,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // actionBar?.setDisplayHomeAsUpEnabled(false) didn't work
 
         // Initialize the Favorites section RV/VH
         supportFragmentManager.beginTransaction()
@@ -29,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.favoriteMenu -> {
                     val favFrag = supportFragmentManager.findFragmentByTag("favorites")
-                    if (favFrag != null && favFrag.isVisible()) {
+                    if (favFrag != null && favFrag.isVisible) {
                         // do nothing, we are already here
                     } else {
                         // launch this fragment
@@ -41,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.playerMenu -> {
                     val playerFrag = supportFragmentManager.findFragmentByTag("playerProfile")
-                    if (playerFrag != null && playerFrag.isVisible()) {
+                    if (playerFrag != null && playerFrag.isVisible) {
                         // do nothing, we are already here
                     } else {
                         // launch this fragment
@@ -53,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.matchupMenu -> {
                     val comparisonFrag = supportFragmentManager.findFragmentByTag("playerComparison")
-                    if (comparisonFrag != null && comparisonFrag.isVisible()) {
+                    if (comparisonFrag != null && comparisonFrag.isVisible) {
                         // do nothing, we are already here
                     } else {
                         // launch this fragment
@@ -65,7 +67,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.profileMenu -> {
                     val userProfileFrag = supportFragmentManager.findFragmentByTag("userProfile")
-                    if (userProfileFrag != null && userProfileFrag.isVisible()) {
+                    if (userProfileFrag != null && userProfileFrag.isVisible) {
                         // do nothing, we are already here
                     } else {
                         // launch this fragment

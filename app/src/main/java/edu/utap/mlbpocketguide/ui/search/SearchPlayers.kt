@@ -78,6 +78,7 @@ class SearchPlayers : Fragment(){
                 // choose any player not already in favorites and keep finish button
                 binding.finishSearchingButton.visibility = View.VISIBLE
                 binding.finishSearchingButton.isClickable = true
+                binding.playerSearch.queryHint = "Add Another Favorite Player"
                 val favs = favoritesViewModel.fetchFavorites()
                 Log.d("TracingSearch","The favorites to filter out are: %s".format(favs.toString()))
                 val notFavorites = listOfPlayers.filterNot {
@@ -87,26 +88,30 @@ class SearchPlayers : Fragment(){
             }
             "searchAnyProfiles" -> {
                 // choose anything, but hide the finish button
-                binding.finishSearchingButton.visibility = View.INVISIBLE
+                binding.finishSearchingButton.visibility = View.GONE
                 binding.finishSearchingButton.isClickable = false
+                binding.playerSearch.queryHint = "Choose a Player to Observe"
                 setAdapter(listOfPlayers, playersLV)
             }
             "searchFavoriteProfiles" -> {
                 // choose any favorites, and hide the finish button
-                binding.finishSearchingButton.visibility = View.INVISIBLE
+                binding.finishSearchingButton.visibility = View.GONE
                 binding.finishSearchingButton.isClickable = false
+                binding.playerSearch.queryHint = "Choose a Favorite to Observe"
                 setAdapter(favoritesViewModel.fetchFavorites(), playersLV)
             }
             "searchPitchers" -> {
                 // only allow us to choose pitchers
-                binding.finishSearchingButton.visibility = View.INVISIBLE
+                binding.finishSearchingButton.visibility = View.GONE
                 binding.finishSearchingButton.isClickable = false
+                binding.playerSearch.queryHint = "Choose a Pitcher to Compare"
                 setAdapter(playersRepo.getPitcherNames(), playersLV)
             }
             "searchHitters" -> {
                 // only allow us to choose hitters
-                binding.finishSearchingButton.visibility = View.INVISIBLE
+                binding.finishSearchingButton.visibility = View.GONE
                 binding.finishSearchingButton.isClickable = false
+                binding.playerSearch.queryHint = "Choose a Hitter to Compare"
                 setAdapter(playersRepo.getHitterNames(), playersLV)
             }
 
