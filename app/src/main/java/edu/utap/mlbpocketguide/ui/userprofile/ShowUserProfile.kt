@@ -38,6 +38,8 @@ class ShowUserProfile: Fragment() {
                     .build()
                 user!!.updateProfile(profileUpdates)
             }
+            // we need to fetch the favorites from the database and send them into viewmodel
+            favoritesViewModel.downloadAndSetFavorites()
             // refresh the current fragment with the new initialization
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragContainer, newInstance(), "userProfile")

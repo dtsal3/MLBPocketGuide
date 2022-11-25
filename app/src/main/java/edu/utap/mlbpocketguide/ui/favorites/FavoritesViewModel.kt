@@ -24,6 +24,7 @@ class FavoritesViewModel: ViewModel() {
     var removeStatusFailure = MutableLiveData<Boolean?>()
 
     init {
+        authUser = Firebase.auth.currentUser
         Log.d("Tracing","We are in the init of the viewModel")
         viewModelScope.launch {
             // If signed in, get the list from firestore
@@ -172,6 +173,38 @@ class FavoritesViewModel: ViewModel() {
             return playerNames.value!!
         }
         return listOf()
+    }
+
+    fun downloadAndSetFavorites() {
+        authUser = Firebase.auth.currentUser
+        if (authUser != null) {
+            db.collection(rootCollection)
+                .whereEqualTo("ownerUid", authUser!!.uid)
+                .get()
+                .addOnSuccessListener { result ->
+                    Log.d(javaClass.simpleName, "favoritePlayers fetch ${result!!.documents.size}")
+                    // Could refactor favorites adapter to not need all 3 of these...
+                    val playerMetasToPost = mutableListOf<FavoriteMeta>()
+                    val playerNamesToPost = mutableListOf<String>()
+                    val playersToPost = mutableListOf<PlayerInfo>()
+                    result.documents.forEach { playerMeta ->
+                        val currentPlayerMeta = playerMeta.toObject(FavoriteMeta::class.java)
+                        playerMetasToPost.add(currentPlayerMeta!!)
+                        playerNamesToPost.add(currentPlayerMeta.playerName)
+                        val playerToAddToPlayers = playerRepository.fetchData().filter { player ->
+                            val fullName = player.firstName + " " + player.lastName
+                            fullName == currentPlayerMeta.playerName
+                        }
+                        playersToPost.add(playerToAddToPlayers[0])
+                    }
+                    playerNames.postValue(playerNamesToPost)
+                    playerMetaList.postValue(playerMetasToPost)
+                    players.postValue(playersToPost)
+                }
+                .addOnFailureListener {
+                    Log.d(javaClass.simpleName, "favoritePlayers fetch FAILED ", it)
+                }
+        }
     }
 
 }
