@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.FragFavoritesBinding
 import edu.utap.mlbpocketguide.ui.search.SearchPlayers
+
 
 class ShowFavorites : Fragment(){
     lateinit var favoritesAdapter: FavoritesAdapter
@@ -33,7 +35,7 @@ class ShowFavorites : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "My Favorites"
         _binding = FragFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }

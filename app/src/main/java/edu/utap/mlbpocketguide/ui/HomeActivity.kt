@@ -19,6 +19,8 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // actionBar?.setDisplayHomeAsUpEnabled(false) didn't work
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setHomeButtonEnabled(false)
 
         // Initialize the Favorites section RV/VH
         supportFragmentManager.beginTransaction()

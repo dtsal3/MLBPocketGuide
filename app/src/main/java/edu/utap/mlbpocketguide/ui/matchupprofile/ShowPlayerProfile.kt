@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -44,7 +45,7 @@ class ShowPlayerProfile: Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Player Spotlight"
         _binding = FragPlayerProfileBinding.inflate(inflater, container, false)
         return binding.root
     }

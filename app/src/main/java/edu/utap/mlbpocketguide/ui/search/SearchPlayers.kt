@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -88,6 +89,7 @@ class SearchPlayers : Fragment(){
             }
             "searchAnyProfiles" -> {
                 // choose anything, but hide the finish button
+                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Search All Players"
                 binding.finishSearchingButton.visibility = View.GONE
                 binding.finishSearchingButton.isClickable = false
                 binding.playerSearch.queryHint = "Choose a Player to Observe"
@@ -95,6 +97,7 @@ class SearchPlayers : Fragment(){
             }
             "searchFavoriteProfiles" -> {
                 // choose any favorites, and hide the finish button
+                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Search Favorites"
                 binding.finishSearchingButton.visibility = View.GONE
                 binding.finishSearchingButton.isClickable = false
                 binding.playerSearch.queryHint = "Choose a Favorite to Observe"
@@ -102,6 +105,7 @@ class SearchPlayers : Fragment(){
             }
             "searchPitchers" -> {
                 // only allow us to choose pitchers
+                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Search All Pitchers"
                 binding.finishSearchingButton.visibility = View.GONE
                 binding.finishSearchingButton.isClickable = false
                 binding.playerSearch.queryHint = "Choose a Pitcher to Compare"
@@ -109,6 +113,7 @@ class SearchPlayers : Fragment(){
             }
             "searchHitters" -> {
                 // only allow us to choose hitters
+                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Search All Hitters"
                 binding.finishSearchingButton.visibility = View.GONE
                 binding.finishSearchingButton.isClickable = false
                 binding.playerSearch.queryHint = "Choose a Hitter to Compare"
