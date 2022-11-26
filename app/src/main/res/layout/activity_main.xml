@@ -28,7 +28,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/landingImage"
+        android:id="@+id/landingImageWrapper"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,12 +36,24 @@
         app:layout_constraintTop_toBottomOf="@id/titleBar"
         app:layout_constraintBottom_toTopOf="@id/signUpButton"
         >
-        <ImageView
-            android:layout_width="320dp"
-            android:layout_height="320dp"
-            android:layout_gravity="center"
-            android:background="@drawable/bos"
-            />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="32dp"
+            android:layout_margin="8dp"
+            >
+
+            <ImageView
+                android:id="@+id/landingImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/landingpage"
+                android:scaleType="centerCrop"
+                />
+
+        </androidx.cardview.widget.CardView>
+
     </FrameLayout>
 
     <Button
@@ -63,5 +75,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        style="?android:attr/buttonBarButtonStyle"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

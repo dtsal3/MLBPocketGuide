@@ -2,7 +2,6 @@ package edu.utap.mlbpocketguide.ui.matchupprofile
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +13,14 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import edu.utap.mlbpocketguide.R
-import edu.utap.mlbpocketguide.api.FangraphsStats
 import edu.utap.mlbpocketguide.databinding.FragPlayerProfileBinding
 import edu.utap.mlbpocketguide.ui.search.SearchPlayers
-import java.lang.Math.floor
+import kotlin.math.floor
+
 
 class ShowPlayerProfile: Fragment(){
 
@@ -174,12 +170,15 @@ class ShowPlayerProfile: Fragment(){
                 if (it.second.toFloat() > maxEra) {maxEra = it.second.toFloat()}
                 chartValues.add(Entry(it.first.toFloat(), it.second.toFloat()))
             }
-            if(stat == "ERA") {
-                lineChart.axisLeft.axisMaximum = floor(maxEra.toDouble()+1).toFloat()
+            when(stat) {
+                "ERA" -> lineChart.axisLeft.axisMaximum = floor(maxEra.toDouble() + 1).toFloat()
             }
             val lineDataSet = LineDataSet(chartValues,"")
+            lineDataSet.setDrawValues(false)
             val lineData = LineData(lineDataSet)
-
+            binding.statToShow.text = stat
+            lineChart.xAxis.granularity = 1.0f
+            lineChart.xAxis.isGranularityEnabled = true
             lineChart.data = lineData
             lineChart.invalidate()
 

@@ -51,7 +51,7 @@ class SearchPlayers : Fragment(){
         return binding.root
     }
 
-    fun setAdapter(listOfPlayerNames: List<String>, LV: ListView) {
+    private fun setAdapter(listOfPlayerNames: List<String>, LV: ListView) {
         listAdapter = ArrayAdapter<String> (
             requireContext(),
             android.R.layout.simple_list_item_1,
@@ -141,6 +141,8 @@ class SearchPlayers : Fragment(){
                         ).show()
                     } else {
                         favoritesViewModel.addFavorite(playerSelected)
+                        listAdapter.remove(playerSelected)
+                        listAdapter.notifyDataSetChanged()
                     }
                 }
                 "searchAnyProfiles" -> {
