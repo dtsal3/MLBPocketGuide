@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import android.content.DialogInterface
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,8 +16,6 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.FragPlayerProfileBinding
 import edu.utap.mlbpocketguide.ui.search.SearchPlayers
@@ -107,6 +107,26 @@ class ShowPlayerProfile: Fragment(){
         pieColors.add(ContextCompat.getColor(this.requireContext(), R.color.teal_200))
         pieColors.add(ContextCompat.getColor(this.requireContext(), R.color.lightBlue))
 
+        // describe what is found in the piechart if tapping the info icon
+        binding.hittingOutcomesInfo.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            dialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Got It", DialogInterface.OnClickListener {
+                        dialog, _ -> dialog.cancel()
+                })
+                .setTitle("Hitting Outcome Explanation")
+                .setMessage("""
+                |The Pie Chart describes the different batting outcomes for the player 
+                |
+                |If the player observed is a hitter, this chart shows the distribution of hits, homeruns, walks, strikeouts and other outs that hitter performed in their career. The sum is the total plate appearances for that hitter.
+                |
+                |If the player observed is a pitcher, this chart shows the distribution of hits, homeruns, walks, strikeouts and other outs that pitcher gave up in their career. The sum is the total number of batters faced for that pitcher.
+                """.trimMargin())
+            val alert = dialogBuilder.create()
+            alert.show()
+        }
+
         // set up our line chart before loading data
         lineChart = binding.lineGraphView
         lineChart.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.white))
@@ -122,6 +142,26 @@ class ShowPlayerProfile: Fragment(){
         lineChart.axisRight.axisLineColor = ContextCompat.getColor(this.requireContext(), R.color.white)
         lineChart.legend.isEnabled = false
 
+        // describe what is found in the linechart if tapping the info icon
+        binding.hittingAveragesInfo.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            dialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Got It", DialogInterface.OnClickListener {
+                        dialog, _ -> dialog.cancel()
+                })
+                .setTitle("Performance Averages Explanation")
+                .setMessage("""
+                |The Line Chart shows the key performance indicator year-over-year for the player. 
+                |
+                |If the player observed is a hitter, we are observing their batting average, which is the percentage of at-bats that result in a hit. A strong performance is about 0.300 
+                |
+                |If the player observed is a pitcher, we are observing their earned run average, which is the number of runs given up per 9 innings pitched. A strong performance is about 3.20
+                """.trimMargin())
+            val alert = dialogBuilder.create()
+            alert.show()
+        }
+
         // Listen for and display the data
         comparisonViewModel.observeLivingPlayerStats().observe(viewLifecycleOwner) { it ->
             // Update Characteristics
@@ -129,9 +169,6 @@ class ShowPlayerProfile: Fragment(){
             binding.profilePos.text = it.profileCharacteristics["playerPosition"]!!.split("/")[0] // I don't like how it looks with multiple positions, so we show the primary
             binding.profileThrow.text = it.profileCharacteristics["playerThrow"]
             binding.profileHit.text = it.profileCharacteristics["playerHit"]
-
-            //binding.pieChartView. = it.profileStatsCounting.toString()
-            //binding.lineGraphView.text = it.profileStatsAvg.toString()
 
             // Update the pie chart
             val pieEntries: ArrayList<PieEntry> = ArrayList()

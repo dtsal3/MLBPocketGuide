@@ -1,9 +1,11 @@
 package edu.utap.mlbpocketguide.ui.matchupprofile
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -66,6 +68,68 @@ class ShowPlayerComparison: Fragment(){
             if (comparisonViewModel.checkHitterToCompare() && comparisonViewModel.checkPitcherToCompare()) {
                 comparisonViewModel.fetchComparisonStats()
             }
+        }
+
+        // describe what is found in the summary section if tapping the info icon
+        binding.summarySectionInfo.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            dialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Got It", DialogInterface.OnClickListener {
+                        dialog, _ -> dialog.cancel()
+                })
+                .setTitle("Summary Explanation")
+                .setMessage("""
+                |This section outlines high-level summaries for batting outcomes. 
+                |
+                |On the hitter side, it is how often that batter gets a hit, strikes out, or walks. On the pitcher side, it is how often the pitcher gives up a hit, strikes a batter out, or gives up a walk.
+                | 
+                |A pitcher is hoping for lower batting averages and walk rates, and high strike-out rates, while the batter is hoping for the inverse.
+                """.trimMargin())
+            val alert = dialogBuilder.create()
+            alert.show()
+        }
+
+        // describe what is found in the hit profile section if tapping the info icon
+        binding.hitProfileIcon.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            dialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Got It", DialogInterface.OnClickListener {
+                        dialog, _ -> dialog.cancel()
+                })
+                .setTitle("Hit Profile Explanation")
+                .setMessage("""
+                |This section describes the type of hits a batter produces, or a pitcher gives up.
+                | 
+                |A pitcher is hoping for a high ground ball rate, and low hard hit rates, while a batter is hoping for the opposite.
+                | 
+                |While a high pull rate is not necessarily good or bad, if a pitcher and batter both have a similar pull rate, it is indicative that the batter will not have to adjust their swing much to compete. 
+                """.trimMargin())
+            val alert = dialogBuilder.create()
+            alert.show()
+        }
+
+        // describe what is found in the swing profile section if tapping the info icon
+        binding.swingProfileInfo.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            dialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Got It", DialogInterface.OnClickListener {
+                        dialog, _ -> dialog.cancel()
+                })
+                .setTitle("Swing Profile Explanation")
+                .setMessage("""
+                |This section describes the outcome typically generated when a batter swings at, or a pitcher throws, a certain type of pitch.
+                | 
+                |wFB/c is the "value" generated per fastball seen or thrown, and wOther/c is the "value" for all other pitches seen or thrown.
+                | 
+                |Contact Rate describes the percentage of time a swing actually results in hitting the ball.
+                | 
+                |A pitcher is looking to minimize these numbers, while a hitter is trying to maximize.
+                """.trimMargin())
+            val alert = dialogBuilder.create()
+            alert.show()
         }
 
         // Listen for and display the data

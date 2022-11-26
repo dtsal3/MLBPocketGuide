@@ -13,26 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0791ab64-eea0-4987-b5ed-4f0277207f66" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/debug/mlb_landing-playstore.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-anydpi-v26/mlb_landing.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-anydpi-v26/mlb_landing_round.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-hdpi/mlb_landing.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-hdpi/mlb_landing_foreground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-hdpi/mlb_landing_round.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-mdpi/mlb_landing.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-mdpi/mlb_landing_foreground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-mdpi/mlb_landing_round.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-xhdpi/mlb_landing.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-xhdpi/mlb_landing_foreground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-xhdpi/mlb_landing_round.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxhdpi/mlb_landing.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxhdpi/mlb_landing_foreground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxhdpi/mlb_landing_round.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxxhdpi/mlb_landing.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxxhdpi/mlb_landing_foreground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxxhdpi/mlb_landing_round.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/debug/res/values/mlb_landing_background.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/landingpage.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
@@ -40,12 +22,9 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/matchupprofile/ShowPlayerComparison.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/matchupprofile/ShowPlayerComparison.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/matchupprofile/ShowPlayerProfile.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/matchupprofile/ShowPlayerProfile.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/search/SearchPlayers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/utap/mlbpocketguide/ui/search/SearchPlayers.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/frag_favorites.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/frag_favorites.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/frag_player_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/frag_player_profile.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
