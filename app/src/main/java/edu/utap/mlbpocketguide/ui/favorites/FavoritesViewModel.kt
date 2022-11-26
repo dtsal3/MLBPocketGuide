@@ -99,6 +99,7 @@ class FavoritesViewModel: ViewModel() {
 
         // Add to firestore too and only post new values on success
         // We check that the player selected is not already a favorite before adding so we should be protected from dupes
+        authUser = Firebase.auth.currentUser
         if (authUser?.uid != null) {
             val favoriteMeta = FavoriteMeta(
                 ownerUid = authUser!!.uid,
@@ -130,6 +131,7 @@ class FavoritesViewModel: ViewModel() {
 
     fun removeFavorite(name: String) {
         // Remove them from the list of names
+        Log.d("FavoritesViewModelRemove", "We are trying to remove: %s".format(name))
         val namesList = playerNames.value!!.toMutableList()
         namesList.remove(name)
         val selectedPlayerInfo = playerRepository.fetchData().filter {
@@ -141,6 +143,7 @@ class FavoritesViewModel: ViewModel() {
         newPlayers.remove(selectedPlayerInfo[0])
 
         // If signed in, we need to remove from firestore too
+        authUser = Firebase.auth.currentUser
         if (authUser?.uid != null) {
             // we should be guaranteed to be in the meta list
             val favoriteMetaToRemove = playerMetaList.value!!.filter {
@@ -152,6 +155,7 @@ class FavoritesViewModel: ViewModel() {
                 .document(favoriteMetaToRemove[0].firestoreID)
                 .delete()
                 .addOnSuccessListener {
+                    Log.d("FavoritesViewModelRemove", "Successfully removed %s from the db".format(name))
                     players.postValue(newPlayers)
                     playerNames.postValue(namesList)
                     playerMetaList.postValue(newMetas)
@@ -161,6 +165,38 @@ class FavoritesViewModel: ViewModel() {
                 }
         } else {
             // otherwise, just skip and remove
+            players.postValue(newPlayers)
+            playerNames.postValue(namesList)
+        }
+    }
+
+    fun clearAllFavorites() {
+        val newPlayers = listOf<PlayerInfo>()
+        val namesList = listOf<String>()
+        val newMetas = listOf<FavoriteMeta>()
+
+        authUser = Firebase.auth.currentUser
+        if (authUser?.uid != null) {
+            db.collection(rootCollection)
+                .whereEqualTo("ownerUid", authUser!!.uid)
+                .get()
+                .addOnSuccessListener { allDocs ->
+                    allDocs.forEach { individualDoc ->
+                        db.collection(rootCollection)
+                            .document(individualDoc.id)
+                            .delete()
+                            .addOnFailureListener {
+                                removeStatusFailure.value = true
+                            }
+                    }
+                    players.postValue(newPlayers)
+                    playerNames.postValue(namesList)
+                    playerMetaList.postValue(newMetas)
+                }
+                .addOnFailureListener {
+                    removeStatusFailure.value = true
+                }
+        } else {
             players.postValue(newPlayers)
             playerNames.postValue(namesList)
         }

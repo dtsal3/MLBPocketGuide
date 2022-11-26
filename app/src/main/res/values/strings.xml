@@ -14,5 +14,8 @@
     <string name="clearFavorites">Clear Favorites</string>
     <string name="signOut">Sign Out or Log In</string>
     <string name="changePassword">Change Password</string>
-    <string name="my_account">My Account</string>
+    <string name="my_account"> Account Details </string>
+    <string name="reinitialize">Restart Your App</string>
+    <string name="userName">Display Name: </string>
+    <string name="changeName">Change Your Display Name</string>
 </resources>

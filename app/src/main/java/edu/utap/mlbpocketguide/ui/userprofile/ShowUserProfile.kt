@@ -1,6 +1,7 @@
 package edu.utap.mlbpocketguide.ui.userprofile
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import edu.utap.mlbpocketguide.AuthInit
+import edu.utap.mlbpocketguide.MainActivity
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.FragUserProfileBinding
 import edu.utap.mlbpocketguide.ui.favorites.FavoritesViewModel
@@ -38,17 +40,14 @@ class ShowUserProfile: Fragment() {
                     .build()
                 user!!.updateProfile(profileUpdates)
             }
-            // we need to fetch the favorites from the database and send them into viewmodel
+            // we need to fetch the favorites from the database and send them into the favorites viewModel
             favoritesViewModel.downloadAndSetFavorites()
-            // refresh the current fragment with the new initialization
+            // refresh the current fragment with the new initialization post sign-in
+            // I don't like doing it so directly because it is an inelegant refresh but it works
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragContainer, newInstance(), "userProfile")
                 .commitNow()
         } else {
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
             Log.d("MainActivity", "sign in failed $result")
         }
     }
@@ -74,43 +73,54 @@ class ShowUserProfile: Fragment() {
 
         binding.clearFavorites.setOnClickListener {
             val favoritesFetched = favoritesViewModel.fetchFavorites()
+            Log.d("UserProfileTracing", "Favorites Fetched : %s".format(favoritesFetched.toString()))
             if (favoritesFetched.isNotEmpty()) {
                 Toast.makeText(
                     requireContext(),
                     "Removing all favorites!",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
-                favoritesFetched.forEach {
-                    favoritesViewModel.removeFavorite(it)
-                }
+                favoritesViewModel.clearAllFavorites()
             } else {
                 Toast.makeText(
                     requireContext(),
                     "There aren't any favorites to remove!",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }
 
+        // if signed in, display their information. otherwise, encourage them to sign in!
         if (authUser != null) {
             // show the user's email address
             val userEmail = Firebase.auth.currentUser?.email ?: "There was an error fetching your email."
             binding.emailActual.text = userEmail
+            val userName = Firebase.auth.currentUser?.displayName ?: "There was an error fetching your display name."
+            binding.userNameActual.text = userName
             binding.passwordActual.text = "********"
             // set it to a sign out button
             binding.signOut.text = "Sign Out"
             binding.signOut.setOnClickListener {
-                //Firebase.auth.signOut()
+                Firebase.auth.signOut()
+                favoritesViewModel.clearAllFavorites()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragContainer, newInstance(), "userProfile")
+                    .commitNow()
                 Log.d("UserProfile", "I would be signing out right now...")
             }
         } else {
-            binding.emailActual.text = "Sign in to display your email."
+            binding.emailActual.text = "Sign in to display your email!"
             binding.passwordActual.text = ""
             // set it to a sign in button
             binding.signOut.text = "Log In"
             binding.signOut.setOnClickListener {
                 AuthInit(signInLauncher)
             }
+        }
+        // reinitialize the app!
+        binding.resetApp.setOnClickListener {
+            val intent = Intent(activity, MainActivity::class.java)
+            startActivity(intent)
         }
 
         // Listen for the sign out event and refresh the fragment when it happens
