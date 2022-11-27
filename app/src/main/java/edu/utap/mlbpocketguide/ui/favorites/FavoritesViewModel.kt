@@ -152,10 +152,18 @@ class FavoritesViewModel: ViewModel() {
             val newMetas = playerMetaList.value!!.toMutableList()
             newMetas.remove(favoriteMetaToRemove[0])
             db.collection(rootCollection)
-                .document(favoriteMetaToRemove[0].firestoreID)
-                .delete()
-                .addOnSuccessListener {
-                    Log.d("FavoritesViewModelRemove", "Successfully removed %s from the db".format(name))
+                .whereEqualTo("ownerUid", authUser!!.uid)
+                .whereEqualTo("playerName", name)
+                .get()
+                .addOnSuccessListener { allDocs ->
+                    allDocs.forEach { individualDoc ->
+                        db.collection(rootCollection)
+                            .document(individualDoc.id)
+                            .delete()
+                            .addOnFailureListener {
+                                removeStatusFailure.value = true
+                            }
+                    }
                     players.postValue(newPlayers)
                     playerNames.postValue(namesList)
                     playerMetaList.postValue(newMetas)

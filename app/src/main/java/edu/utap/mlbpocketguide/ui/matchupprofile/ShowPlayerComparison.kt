@@ -1,6 +1,5 @@
 package edu.utap.mlbpocketguide.ui.matchupprofile
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.FragMatchupComparisonBinding
 import edu.utap.mlbpocketguide.ui.search.SearchPlayers

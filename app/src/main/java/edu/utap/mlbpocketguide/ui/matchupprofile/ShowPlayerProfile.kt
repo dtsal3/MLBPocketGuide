@@ -17,7 +17,6 @@ import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.FragPlayerProfileBinding
