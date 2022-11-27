@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="12sp"
             style="?android:attr/buttonBarButtonStyle"
             android:text="Search Players"
             android:layout_gravity="center_vertical"
@@ -31,7 +31,7 @@
             android:layout_weight="1"
             style="?android:attr/buttonBarButtonStyle"
             android:gravity="center"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:text="Fetch Data!"
             app:layout_constraintTop_toBottomOf="@+id/searchProfileRow"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
             android:layout_marginHorizontal="4dp"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:text="Select a Favorite"
             android:layout_gravity="center_vertical"
             />
@@ -169,7 +169,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingVertical="16dp"
-        android:paddingLeft="8dp"
+        android:paddingHorizontal="8dp"
         app:layout_constraintTop_toBottomOf="@id/playerAttributesRowLabels"
         app:layout_constraintStart_toStartOf="parent"
         android:orientation="horizontal"
@@ -190,7 +190,7 @@
         android:background="@drawable/ic_outline_info_24"
         android:backgroundTint="@color/gray"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         />
 
     </LinearLayout>
@@ -220,7 +220,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingVertical="16dp"
-        android:paddingLeft="8dp"
+        android:paddingHorizontal="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pieChartViewWrapper"
         android:orientation="horizontal"
@@ -240,7 +240,7 @@
             android:background="@drawable/ic_outline_info_24"
             android:backgroundTint="@color/gray"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             />
 
     </LinearLayout>
@@ -262,8 +262,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="-8dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="-8dp"
             />
 
         <com.github.mikephil.charting.charts.LineChart
@@ -271,7 +271,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             />
 
 

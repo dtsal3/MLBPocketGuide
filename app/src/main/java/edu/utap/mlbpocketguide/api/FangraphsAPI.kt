@@ -5,7 +5,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
 import java.io.IOException
-import kotlin.collections.Map.Entry
 
 class FangraphsAPI {
 
@@ -28,17 +27,17 @@ class FangraphsAPI {
             Log.d("FangraphsAPI", "Caught an exception trying to get the stats from FanGraphs")
             // return an empty stats object to satisfy compiler, we will check if its populated before setting later
             return FangraphsStats(
-                    mutableMapOf<String, Double>(),
-                    mutableMapOf<String, String>(),
-                    mutableMapOf<String, Int>(),
-                    mutableMapOf<String, ArrayList<Pair<Int, Double>>>()
+                    mutableMapOf(),
+                    mutableMapOf(),
+                    mutableMapOf(),
+                    mutableMapOf()
                 )
         }
 
     }
 
     // Map our JSON response to the inputs we actually want in our data structure
-    fun toPlayerStats(player: JSONObject, position: String): FangraphsStats {
+    private fun toPlayerStats(player: JSONObject, position: String): FangraphsStats {
 
         // Initialize our objects
         val comparisonStats = mutableMapOf<String, Double>()
@@ -134,6 +133,6 @@ class FangraphsAPI {
 
     companion object {
         private val client = OkHttpClient()
-        private val url = "https://www.fangraphs.com/api/players/stats"
+        private const val url = "https://www.fangraphs.com/api/players/stats"
     }
 }

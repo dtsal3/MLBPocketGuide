@@ -14,8 +14,6 @@ import edu.utap.mlbpocketguide.databinding.RvFavPlayerRowBinding
 class FavoritesAdapter(private val viewModel: FavoritesViewModel)
     : ListAdapter<PlayerInfo, FavoritesAdapter.VH>(PlayerDiff()) {
         companion object {
-            val firstNameKey = "firstName"
-            val lastNameKey = "lastName"
         }
     class PlayerDiff : DiffUtil.ItemCallback<PlayerInfo>() {
         override fun areItemsTheSame(oldItem: PlayerInfo, newItem: PlayerInfo): Boolean {

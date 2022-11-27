@@ -10,10 +10,8 @@ import android.widget.ListView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.api.PlayerRepository
 import edu.utap.mlbpocketguide.databinding.FragSearchBinding
@@ -31,7 +29,7 @@ class SearchPlayers : Fragment(){
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     companion object {
-        private val search = "search"
+        private const val search = "search"
         fun newInstance(searchMode: String): SearchPlayers {
             val frag = SearchPlayers()
             val bundle = Bundle()
@@ -202,7 +200,7 @@ class SearchPlayers : Fragment(){
         })
 
         // We want to launch a toast based on whether or not we successfully added a favorite, but have no access to the context
-        favoritesViewModel.addStatusFailure.observe(viewLifecycleOwner, Observer { status ->
+        favoritesViewModel.addStatusFailure.observe(viewLifecycleOwner, { status ->
             status?.let {
                 //Reset status value at first to prevent multitriggering
                 //and to be available to trigger action again
@@ -215,7 +213,7 @@ class SearchPlayers : Fragment(){
             }
         })
 
-        favoritesViewModel.removeStatusFailure.observe(viewLifecycleOwner, Observer { status ->
+        favoritesViewModel.removeStatusFailure.observe(viewLifecycleOwner, { status ->
             status?.let {
                 //Reset status value at first to prevent multitriggering
                 //and to be available to trigger action again

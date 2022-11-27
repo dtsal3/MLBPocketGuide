@@ -1,7 +1,6 @@
 package edu.utap.mlbpocketguide.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.ActivityHomeBinding

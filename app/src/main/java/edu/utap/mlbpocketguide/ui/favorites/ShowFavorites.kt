@@ -18,9 +18,8 @@ import edu.utap.mlbpocketguide.ui.search.SearchPlayers
 
 
 class ShowFavorites : Fragment(){
-    lateinit var favoritesAdapter: FavoritesAdapter
+    private lateinit var favoritesAdapter: FavoritesAdapter
     private val favoritesViewModel: FavoritesViewModel by activityViewModels()
-    // lateinit var listAdapter: ArrayAdapter<String>
     private var _binding: FragFavoritesBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -45,7 +44,6 @@ class ShowFavorites : Fragment(){
         Log.d(javaClass.simpleName, "onViewCreated")
 
         // Initialize the Favorites section RV/VH and handle adding new favorites
-        //XXX Write me. Setup adapter.
         Log.d("Tracing", "Setting up the recycler for favorites")
         val rv = binding.favoritesRV
         favoritesAdapter = FavoritesAdapter(favoritesViewModel)
@@ -58,7 +56,7 @@ class ShowFavorites : Fragment(){
         Log.d("Tracing", "Our current list submitted is %s".format(currentList.value.toString()))
         favoritesAdapter.notifyDataSetChanged()
 
-        favoritesViewModel.observeLivingFavorites().observe(viewLifecycleOwner, Observer {
+        favoritesViewModel.observeLivingFavorites().observe(viewLifecycleOwner, {
             favoritesAdapter.submitList(it)
             favoritesAdapter.notifyDataSetChanged()
         })

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import android.content.DialogInterface
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -112,7 +111,7 @@ class ShowPlayerProfile: Fragment(){
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("Got It", DialogInterface.OnClickListener {
+                .setPositiveButton("Got It", {
                         dialog, _ -> dialog.cancel()
                 })
                 .setTitle("Hitting Outcome Explanation")
@@ -147,7 +146,7 @@ class ShowPlayerProfile: Fragment(){
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("Got It", DialogInterface.OnClickListener {
+                .setPositiveButton("Got It", {
                         dialog, _ -> dialog.cancel()
                 })
                 .setTitle("Performance Averages Explanation")
