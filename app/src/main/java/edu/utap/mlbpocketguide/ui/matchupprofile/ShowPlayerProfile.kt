@@ -2,6 +2,7 @@ package edu.utap.mlbpocketguide.ui.matchupprofile
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +13,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import edu.utap.mlbpocketguide.R
 import edu.utap.mlbpocketguide.databinding.FragPlayerProfileBinding
 import edu.utap.mlbpocketguide.ui.search.SearchPlayers
@@ -111,9 +115,9 @@ class ShowPlayerProfile: Fragment(){
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("Got It", {
-                        dialog, _ -> dialog.cancel()
-                })
+                .setPositiveButton("Got It") { dialog, _ ->
+                    dialog.cancel()
+                }
                 .setTitle("Hitting Outcome Explanation")
                 .setMessage("""
                 |The Pie Chart describes the different batting outcomes for the player 
@@ -146,9 +150,9 @@ class ShowPlayerProfile: Fragment(){
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("Got It", {
-                        dialog, _ -> dialog.cancel()
-                })
+                .setPositiveButton("Got It") { dialog, _ ->
+                    dialog.cancel()
+                }
                 .setTitle("Performance Averages Explanation")
                 .setMessage("""
                 |The Line Chart shows the key performance indicator year-over-year for the player. 
@@ -201,10 +205,13 @@ class ShowPlayerProfile: Fragment(){
             }
             val chartData = it.profileStatsAvg[stat]
             val chartValues = arrayListOf<Entry>()
+            val chartLabels = arrayListOf<String>()
             var maxEra = 0f
             chartData!!.forEach {
                 if (it.second.toFloat() > maxEra) {maxEra = it.second.toFloat()}
                 chartValues.add(Entry(it.first.toFloat(), it.second.toFloat()))
+                Log.d("TracingLabels", "We are adding this: %s to our labels".format(it.first.toString()))
+                chartLabels.add(it.first.toString())
             }
             when(stat) {
                 "ERA" -> lineChart.axisLeft.axisMaximum = floor(maxEra.toDouble() + 1).toFloat()
@@ -215,6 +222,16 @@ class ShowPlayerProfile: Fragment(){
             binding.statToShow.text = stat
             lineChart.xAxis.granularity = 1.0f
             lineChart.xAxis.isGranularityEnabled = true
+
+            val xAxisFormatter = object: ValueFormatter() {
+                override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                    Log.d("TracingLabels", "We are getting this: %s in our getAxisLabels".format(value.toInt().toString()))
+                    return value.toInt().toString()
+                }
+            }
+            with(lineChart.xAxis) {
+                valueFormatter = xAxisFormatter
+            }
             lineChart.data = lineData
             lineChart.invalidate()
 
