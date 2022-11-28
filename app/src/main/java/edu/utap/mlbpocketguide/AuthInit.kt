@@ -7,6 +7,7 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 
 // https://firebase.google.com/docs/auth/android/firebaseui
+// Borrowed implementation from assignments
 class AuthInit(signInLauncher: ActivityResultLauncher<Intent>) {
     companion object {
         private const val TAG = "AuthInit"
@@ -22,8 +23,6 @@ class AuthInit(signInLauncher: ActivityResultLauncher<Intent>) {
                 AuthUI.IdpConfig.EmailBuilder().build())
 
             // Create and launch sign-in intent
-            // XXX Write me. Set authentication providers and start sign-in for user
-            // setIsSmartLockEnabled(false) solves some problems
             Log.d(TAG, providers.toString())
             val signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
@@ -33,7 +32,6 @@ class AuthInit(signInLauncher: ActivityResultLauncher<Intent>) {
             signInLauncher.launch(signInIntent)
         } else {
             Log.d(TAG, "XXX user ${user.displayName} email ${user.email}")
-            // viewModel.updateUser()
         }
     }
 }
